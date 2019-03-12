@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC');
+
+* {
+    font-family: "Noto Sans TC";
+}
+
+.bg {
+    background-color: #FFD885;
+}
+
+nav {
+    background-color: #FFC16B;
+}
+
+
+#logo {
+    vertical-align: top;
+}
+
+@media screen and (max-width: 768px) {
+    .about_me {
+        font-size: 40px;
+        color: white;
+    }
+
+    .section_spacing {
+        margin-top: 130px;
+    }
+
+    .table_outline {
+        border-right: #FFD885 2px solid;
+    }
+
+    .nav-item > a{
+        border: 2px solid white;
+        border-radius: 10px;
+    }
+
+    ul > .nav-item:nth-child(1) a{
+        border: 2px solid #DC3545;
+        color: #DC3545;
+    }
+    ul > .nav-item:nth-child(1) a::after{
+        content: "履歷";
+        font-size: 25px;
+        margin-left: 10px;
+    }
+    ul > .nav-item:nth-child(2) a::after{
+        content: "自傳";
+        font-size: 25px;
+        margin-left: 10px;
+    }
+    ul > .nav-item:nth-child(3) a::after{
+        content: "作品集";
+        font-size: 25px;
+        margin-left: 10px;
+    }
+
+    .nav-item > a:active {
+        opacity: 0.5;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .about_me {
+        font-size: 50px;
+        color: white;
+    }
+
+    #logo {
+        animation-name: ani_logo;
+        animation-duration: 0.7s;
+        animation-timing-function: linear;
+    }
+
+    .section_spacing {
+        margin-top: 150px;
+    }
+
+    .table_style {
+        margin-left: 10px;
+        padding-top: 20px;
+        background: #FFE09E;
+        border-radius: 20px;
+    }
+
+    .table_outline {
+        border-right: #FFE09E 2px solid;
+    }
+
+
+    .ani_btn:hover {
+        animation-name: ani_btn;
+        animation-duration: 0.5s;
+        animation-timing-function: ease;
+        animation-fill-mode: forwards;
+    }
+
+    ul .nav-item:hover::after {
+        color: #333333;
+        position: absolute;
+        padding: 4px;
+        border: 1.5px solid #333333;
+        border-radius: 10px;
+        background: #FFE785;
+        opacity: 0.9;
+    }
+
+    ul .nav-item:nth-child(1):hover::after {
+        content: "簡歷";        
+    }
+
+    ul .nav-item:nth-child(2):hover::after {
+        content: "自傳";
+    }
+
+    ul .nav-item:nth-child(3):hover::after {
+        content: "作品集";
+    }
+
+}
+
+.ani_btn > i {
+    font-size: 30px;
+}
+
+
+@keyframes ani_logo {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ani_btn {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    100% {
+        transform: scale(1.5, 1.5);
+    }
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+img {
+    border-radius: 10px;
+}
+
+.table_caption {
+    padding: 10px;
+    margin-bottom: 0px;
+    background-color: #FFC14D;
+    font-size: 25px;
+    border-radius: 7px;
+}
+
+.table_outline td {
+    border-right: #DEE2E6 1px solid;
+}
