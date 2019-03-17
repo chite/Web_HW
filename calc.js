@@ -29,10 +29,9 @@ let mdel = document.getElementById("mdel");
 let mr = document.getElementById("mr");
 let mc = document.getElementById("mc");
 
-let initialInput = false;
-let accumulateBol = true;
-let detectAccumulate = false;
-let turnToSec = false;
+let initialInputNotSec = false;
+let getSign = false;
+let AccumulateEqual = false;
 let accumulate;
 let memory = "";
 
@@ -112,30 +111,29 @@ back.onclick = function() {
     back.blur();
 };
 evall.onclick = function() {
-    if (inputSec.value == "" && detectAccumulate == true) {
+    if (inputSec.value == "" && AccumulateEqual == true) { //如果sub為空且可開始連續=
         for (var i = accumulate.length; i >= 0; i--) {
-            if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && accumulateBol == false) {
+            if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && getSign == true) {
                 accumulate = accumulate.substring(i);
-            }
+            } //如果有+-...在字串[i]中且未取得+-...
         }
         input.value = eval(input.value += accumulate);
-        accumulateBol = true;
-        detectAccumulate = true;
+        getSign = false; // 已取得+-...
+        AccumulateEqual = true; //可連續=
         evall.blur();
-    } else if (inputSec.value != "" && detectAccumulate == false) {
+    } else if (inputSec.value != "" && AccumulateEqual == false) { //如果sec不為空且不可連續=
         try {
             inputSec.value += input.value;
-            accumulate = inputSec.value;
+            accumulate = inputSec.value; //取得要計算的值以供連續=
             input.value = eval(inputSec.value);
         } catch (Error) {
             alert("Error");
             input.value = "0";
-            inputSec.value = "";
         } finally {
             inputSec.value = "";
-            initialInput = false;
-            accumulateBol = false; //新的=後可再連續=
-            detectAccumulate = true;
+            initialInputNotSec = false; //不清空input,可輸至sec
+            getSign = true; //可開始抓+-...
+            AccumulateEqual = true; // 可開始連續=
             evall.blur();
         }
     }
@@ -180,28 +178,28 @@ log.onclick = function() {
 
 madd.onclick = function() {
     memory += "+" + input.value;
-    turnTosec = true;
+    madd.blur();
 };
 mdel.onclick = function() {
     memory += -input.value;
-    turnToSec = true;
+    mdel.blur();
 };
 
 mc.onclick = function() {
     memory = "";
+    mc.blur();
 };
 
 mr.onclick = function() {
     if (memory != "") {
-        if (initialInput == true) { //可清空input
+        if (initialInputNotSec == true) { //可清空input
             input.value = eval(memory);
-            initialInput = false; //不清空input
-            turnToSec = true; //可輸至sec
+            initialInputNotSec = false; //不清空input
         } else {
             input.value = eval(memory);
-            turnToSec = true; //可輸至sec
         }
     }
+    mr.blur();
 };
 
 //鍵盤模式
@@ -286,30 +284,29 @@ function keyDown(e) {
             break;
         case 13:
             setColor(evall);
-            if (inputSec.value == "" && detectAccumulate == true) {
+            if (inputSec.value == "" && AccumulateEqual == true) { //如果sub為空且可開始連續=
                 for (var i = accumulate.length; i >= 0; i--) {
-                    if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && accumulateBol == false) {
+                    if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && getSign == true) {
                         accumulate = accumulate.substring(i);
-                    }
+                    } //如果有+-...在字串[i]中且未取得+-...
                 }
                 input.value = eval(input.value += accumulate);
-                accumulateBol = true;
-                detectAccumulate = true;
+                getSign = false; // 已取得+-...
+                AccumulateEqual = true; //可連續=
                 evall.blur();
-            } else if (inputSec.value != "" && detectAccumulate == false) {
+            } else if (inputSec.value != "" && AccumulateEqual == false) { //如果sec不為空且不可連續=
                 try {
                     inputSec.value += input.value;
-                    accumulate = inputSec.value;
+                    accumulate = inputSec.value; //取得要計算的值以供連續=
                     input.value = eval(inputSec.value);
                 } catch (Error) {
                     alert("Error");
                     input.value = "0";
-                    inputSec.value = "";
                 } finally {
                     inputSec.value = "";
-                    initialInput = false;
-                    accumulateBol = false; //新的=後可再連續=
-                    detectAccumulate = true;
+                    initialInputNotSec = false; //不清空input,可輸至sec
+                    getSign = true; //可開始抓+-...
+                    AccumulateEqual = true; // 可開始連續=
                     evall.blur();
                 }
             }
@@ -332,27 +329,24 @@ function checkZero() {
 
 //計算時的換行機制
 function forInput(Num) {
-    if (initialInput == true) { //清空input
+    if (initialInputNotSec == true) { //清空input  //3
         input.value = "";
         input.value += Num;
         checkZero();
-        initialInput = false; //不清空input
-        turnToSec = true; //可輸至sec
-    } else {
+        initialInputNotSec = false; //不清空input,可輸至sec
+    } else { //1
         input.value += Num;
-        turnToSec = true; //可輸至sec
         checkZero();
     }
 }
 
 function forCount(count) {
-    if (turnToSec == true) { //可輸至sec
+    if (initialInputNotSec == false) { //不清空input, 可輸至sec   //2
         inputSec.value += input.value;
         inputSec.value += count;
-        initialInput = true; //可清空input
-        detectAccumulate = false; //不可繼續抓取自串的+-..
-        turnToSec = false; //不可輸至sec
-    } else if (turnToSec == false && count != inputSec.value[inputSec.value.length - 1]) {
+        initialInputNotSec = true; //可清空input
+        AccumulateEqual = false; //不可連續=
+    } else if (initialInputNotSec == true && count != inputSec.value[inputSec.value.length - 1]) { //不可加入sub但可替換+-..
         inputSec.value = inputSec.value.substring(0, inputSec.value.length - 1);
         inputSec.value += count;
     }
@@ -363,9 +357,9 @@ function setColor(element) {
     let choosecolor = element.style.backgroundColor;
     if (element == evall) {
         element.style.backgroundColor = "#FF6B7A";
-        setTimeout(() => element.style.backgroundColor = choosecolor, 300);
+        setTimeout(() => element.style.backgroundColor = choosecolor, 100);
     } else {
         element.style.backgroundColor = "#8FCDFF";
-        setTimeout(() => element.style.backgroundColor = choosecolor, 300);
+        setTimeout(() => element.style.backgroundColor = choosecolor, 100);
     }
 }
