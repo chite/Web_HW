@@ -1,0 +1,80 @@
+html {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    background: linear-gradient(110deg, white 20%, #DBDBDB 20%, #DBDBDB 60%, white 60%, white 90%, #DBDBDB 90%);
+
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.container-style {
+    border: 1.5px solid #B8B8B8;
+    border-radius: 5px;
+    width: 250px;
+    height: 530px;
+    margin: auto;
+    margin-top: 10px;
+    padding: 5px;
+    background-color: rgba(179, 198, 255, 0.5);
+}
+
+#inputNum,
+#inputNumAdd {
+    background-color: white;
+    display: block;
+    margin: 0 auto;
+    padding: 4px 8px;
+    border: 0px;
+    text-align: right;
+    color: black;
+    font-size: 20px;
+}
+
+#inputNum {
+    margin-bottom: 5px;
+}
+
+#inputNumAdd {
+    margin-top: 5px;
+}
+
+.container-style>input {
+    width: 220px;
+    margin: 10px auto;
+}
+
+.square {
+    width: 240px;
+    margin: auto;
+}
+
+.square input {
+    border-radius: 5px;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    margin-top: 10px;
+    background-color: #DBE4FF;
+    border: 0px;
+}
+
+.square input:hover {
+    background-color: #8FCDFF;
+}
+
+#dot {
+    font-weight: bolder;
+}
+
+#eval {
+    background-color: #FF8591;
+}
+
+#eval:hover {
+    background-color: #FF6B7A;
+}
