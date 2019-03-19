@@ -94,7 +94,7 @@ multiply.onclick = function() {
     multiply.blur();
 };
 division.onclick = function() {
-    forCount("÷");
+    forCount("/");
     division.blur();
 };
 cls.onclick = function() {
@@ -113,7 +113,7 @@ back.onclick = function() {
 evall.onclick = function() {
     if (inputSec.value == "" && AccumulateEqual == true) { //如果sub為空且可開始連續=
         for (var i = accumulate.length; i >= 0; i--) {
-            if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && getSign == true) {
+            if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "/" == accumulate[i] && getSign == true) {
                 accumulate = accumulate.substring(i);
             } //如果有+-...在字串[i]中且未取得+-...
         }
@@ -123,6 +123,7 @@ evall.onclick = function() {
         evall.blur();
     } else if (inputSec.value != "" && AccumulateEqual == false) { //如果sec不為空且不可連續=
         try {
+
             inputSec.value += input.value;
             accumulate = inputSec.value; //取得要計算的值以供連續=
             input.value = eval(inputSec.value);
@@ -265,7 +266,7 @@ function keyDown(e) {
             setColor(multiply);
             break;
         case 111:
-            forCount("÷");
+            forCount("/");
             setColor(division);
             break;
         case 8:
@@ -286,7 +287,7 @@ function keyDown(e) {
             setColor(evall);
             if (inputSec.value == "" && AccumulateEqual == true) { //如果sub為空且可開始連續=
                 for (var i = accumulate.length; i >= 0; i--) {
-                    if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "÷" == accumulate[i] && getSign == true) {
+                    if ("+" == accumulate[i] || "-" == accumulate[i] || "*" == accumulate[i] || "/" == accumulate[i] && getSign == true) {
                         accumulate = accumulate.substring(i);
                     } //如果有+-...在字串[i]中且未取得+-...
                 }
@@ -356,10 +357,10 @@ function forCount(count) {
 function setColor(element) {
     let choosecolor = element.style.backgroundColor;
     if (element == evall) {
-        element.style.backgroundColor = "#FF6B7A";
-        setTimeout(() => element.style.backgroundColor = choosecolor, 100);
+        element.style.backgroundColor = "#FF1F1F";
+        setTimeout(() => element.style.backgroundColor = choosecolor, 200);
     } else {
-        element.style.backgroundColor = "#8FCDFF";
-        setTimeout(() => element.style.backgroundColor = choosecolor, 100);
+        element.style.backgroundColor = "#FD4C49";
+        setTimeout(() => element.style.backgroundColor = choosecolor, 200);
     }
 }

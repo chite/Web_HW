@@ -12,25 +12,25 @@ body {
 }
 
 .container-style {
-    border: 1.5px solid #B8B8B8;
+    border: 1.5px solid #EBEBEB;
     border-radius: 5px;
     width: 250px;
     height: 530px;
     margin: auto;
     margin-top: 10px;
     padding: 5px;
-    background-color: rgba(179, 198, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 #inputNum,
 #inputNumAdd {
-    background-color: white;
+    background-color: black;
+    color: white;
     display: block;
     margin: 0 auto;
     padding: 4px 8px;
     border: 0px;
     text-align: right;
-    color: black;
     font-size: 20px;
 }
 
@@ -59,12 +59,13 @@ body {
     height: 50px;
     margin: 5px;
     margin-top: 10px;
-    background-color: #DBE4FF;
+    background-color: #F15956;
+    color: white;
     border: 0px;
 }
 
 .square input:hover {
-    background-color: #8FCDFF;
+    background-color: #FD4C49;
 }
 
 #dot {
@@ -72,9 +73,9 @@ body {
 }
 
 #eval {
-    background-color: #FF8591;
+    background-color: #ED3131;
 }
 
 #eval:hover {
-    background-color: #FF6B7A;
+    background-color: #FF1F1F;
 }
