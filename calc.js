@@ -170,11 +170,13 @@ tan.onclick = function() {
     tan.blur();
 };
 log.onclick = function() {
-    inputSec.value += input.value;
-    input.value = Math.log10(eval(inputSec.value));
-    inputSec.value = "";
-    initialInput = false;
-    log.blur();
+    if (input.value != "0") {
+        inputSec.value += input.value;
+        input.value = Math.log10(eval(inputSec.value));
+        inputSec.value = "";
+        initialInput = false;
+        log.blur();
+    }
 };
 
 madd.onclick = function() {
