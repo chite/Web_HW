@@ -18,12 +18,6 @@ $(".img-element").each(
         $(this).attr("src", "resources/bg_card.png");
     }
 );
-let isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-if (!isChrome) {
-    $('#iframeAudio').remove();
-} else {
-    $('#playAudio').remove();  
-}
 
 //click card
 $(".img-element").on("click", clickCard);
