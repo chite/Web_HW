@@ -150,21 +150,21 @@ right.onclick = function() {
 };
 sin.onclick = function() {
     inputSec.value += input.value;
-    input.value = Math.sin(eval(inputSec.value));
+    input.value = Math.sin(eval(inputSec.value) * Math.PI / 180);
     inputSec.value = "";
     initialInput = false;
     sin.blur();
 };
 cos.onclick = function() {
     inputSec.value += input.value;
-    input.value = Math.cos(eval(inputSec.value));
+    input.value = Math.cos(eval(inputSec.value) * Math.PI / 180);
     inputSec.value = "";
     initialInput = false;
     cos.blur();
 };
 tan.onclick = function() {
     inputSec.value += input.value;
-    input.value = Math.tan(eval(inputSec.value));
+    input.value = Math.tan(eval(inputSec.value) * Math.PI / 180);
     inputSec.value = "";
     initialInput = false;
     tan.blur();
