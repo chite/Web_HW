@@ -18,35 +18,34 @@ $(".img-element").each(
         $(this).attr("src", "resources/bg_card.png");
     }
 );
+$(window).on('load', function(){
+	$('.start').prop('disabled', false).text("開始");
+});
+
 
 //click card
 $(".img-element").on("click", clickCard);
 
 $('.start').on('click', function(e) {
     if ($('.sec').text() == 0) {
-        $('.start').blur();
-        $('.start').attr('disabled', true);
+        $('.start').blur().attr('disabled', true);
         inter = setInterval(function() {
             if (!$('.start').hasClass('pauseInterval')) {
                 counter++;
             }
             $('.sec').text(counter);
         }, 1000);
-        $('.pause').attr('disabled', false);
+        $('.pause').prop('disabled', false);
     } else {
-        $('.start').blur();
-        $('.start').attr('disabled', true);
-        $('.start').removeClass('pauseInterval');
+        $('.start').blur().prop('disabled', true).removeClass('pauseInterval');
         $('.pause').attr('disabled', false);
     }
 
 });
 
 $('.pause').on('click', function() {
-    $(this).blur();
-    $(this).attr('disabled', true);
-    $('.start').attr('disabled', false).text('繼續');
-    $('.start').addClass('pauseInterval');
+    $(this).blur().prop('disabled', true);
+    $('.start').attr('disabled', false).text('繼續').addClass('pauseInterval');
 });
 
 
@@ -107,9 +106,8 @@ function clickCard() {
                         //finish
                         if (finish == 16) { //結束
                             clearInterval(inter);
-                            $('.pause').attr('disabled', true);
-                            $('.start').attr('disabled', false).text("重新開始");
-                            $('.start').on('click', function() {
+                            $('.pause').prop('disabled', true);
+                            $('.start').prop('disabled', false).text("重新開始").on('click', function() {
                                 location.reload();
                             });
                         }

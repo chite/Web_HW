@@ -51,16 +51,25 @@ body {
     font-family: 'horror';
     background-color: #0A0A0A;
     margin-right: 3px;
+    border: none;
 }
 
-.btn-style>.start {
+.btn-style > button:disabled {
+    color: #292929;
+}
+
+.start {
     color: red;
-    border: 1px dotted red;
+}
+.start:enabled:hover {
+    color: #B30000;
 }
 
-.btn-style>.pause {
-    border: 1px dotted white;
+.pause {
     color: white;
+}
+.pause:enabled:hover {
+    color: #545454;
 }
 
 .counter, .sec {
