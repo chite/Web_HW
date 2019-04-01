@@ -1,14 +1,14 @@
 let glo = {
-	card_arr: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8],
-	card_status: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	turn: 0,
-	firstNum: 0,
-	secondNum: 0,
-	firstIndex: 0,
-	secondIndex: 0,
-	counter: 0,
-	finish: 0,
-	inter: null
+    card_arr: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8],
+    card_status: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    turn: 0,
+    firstNum: 0,
+    secondNum: 0,
+    firstIndex: 0,
+    secondIndex: 0,
+    counter: 0,
+    finish: 0,
+    inter: null
 };
 
 
@@ -21,8 +21,8 @@ $(".img-element").each(
         $(this).attr("src", "resources/bg_card.png");
     }
 );
-$(window).on('load', function(){
-	$('.start').prop('disabled', false).text("開始");
+$(window).on('load', function() {
+    $('.start').prop('disabled', false).text("開始");
 });
 
 
@@ -30,13 +30,13 @@ $(window).on('load', function(){
 $(".img-element").on("click", clickCard);
 
 $('.start').on('click', function(e) {
-    if ($('.sec').text() == 0) {
+    if ($('.counter').text() == "00 分 00 秒") {
         $('.start').blur().attr('disabled', true);
         glo.inter = setInterval(function() {
             if (!$('.start').hasClass('pauseInterval')) {
                 glo.counter++;
             }
-            $('.sec').text(glo.counter);
+            $('.counter').text(('0' + Math.floor(glo.counter / 60)).slice(-2) + " 分 " + ('0' + Math.floor(glo.counter % 60)).slice(-2) + " 秒");
         }, 1000);
         $('.pause').prop('disabled', false);
     } else {
