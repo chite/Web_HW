@@ -11,9 +11,11 @@ let glo = {
     inter: null
 };
 
-
 //initialize
-change(glo.card_arr);
+glo.card_arr.sort(function(){
+    return Math.random()-0.5;
+});
+console.log(glo.card_arr);
 $('.bor').hide();
 $('section').fadeOut(0);
 $(".img-element").each(
@@ -24,7 +26,6 @@ $(".img-element").each(
 $(window).on('load', function() {
     $('.start').prop('disabled', false).text("開始");
 });
-
 
 //click card
 $(".img-element").on("click", clickCard);
@@ -50,18 +51,6 @@ $('.pause').on('click', function() {
     $(this).blur().prop('disabled', true);
     $('.start').attr('disabled', false).text('繼續').addClass('pauseInterval');
 });
-
-
-function change(arr) {
-    let i, j, temp;
-    for (i = arr.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-    return arr;
-}
 
 function clickCard() {
     if (glo.turn != 2 && glo.counter != 0 && !$('.pause').is(':disabled')) {
