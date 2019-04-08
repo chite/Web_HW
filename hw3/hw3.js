@@ -15,7 +15,11 @@ let glo = {
 glo.card_arr.sort(function(){
     return Math.random()-0.5;
 });
-console.log(glo.card_arr);
+for(let i = 1; i < 9; i ++){
+	let img = new Image();
+	img.src = "resources/" + i + ".png";
+}
+img = null;
 $('.bor').hide();
 $('section').fadeOut(0);
 $(".img-element").each(
