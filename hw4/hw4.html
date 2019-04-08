@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Paint</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="https://raw.githubusercontent.com/chite/Resume/master/resources/icon1.png">
+    <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/chite/Resume/master/resources/icon1.png">
+    <link rel="stylesheet" type="text/css" href="hw4.css">
+</head>
+
+<body>
+    <header>
+        <h2>PAINT</h2>
+        <nav>
+            <button id="download"><a id="download_a" download="myCanvas">儲存</a></button>
+            <button id="undo">復原</button>
+            <button id="redo">重作</button>
+        </nav>
+    </header>
+    <section class="canSec">
+        <canvas id="myCanvas" width="400" height="600"></canvas>
+        <section class="container">
+            <div class="tool">
+                <input id="size" type="range" min="1" max="31" step="1" value="1">
+                <p class="p">1</p>
+                <div id="color"></div>
+            </div>
+            <div class="tool">
+                <button id="pencil">鉛筆</button>
+                <select id="edge">
+                    <option>方頭</option>
+                    <option>圓頭</option>
+                </select>
+                <button id="eraser">橡皮擦</button>
+            </div>
+            <div class="tool">
+                <button id="word">文字</button>
+                <button id="square">方形</button>
+                <button id="circle">圓形</button>
+            </div>
+            <div class="tool">
+                <button id="imitate">仿製工具</button>
+                <button id="upload">上傳圖片</button>
+            </div>
+            <div class="area">
+                <div class="part">
+                    <textarea id="content" placeholder=" 請輸入欲顯示之文字"></textarea>
+                    <select id="font-type">
+                        <option>sans-serif</option>
+                        <option>serif</option>
+                        <option>微軟正黑體</option>
+                        <option>標楷體</option>
+                    </select>
+                    <button type="submit">確認</button>
+                </div>
+                <div class="part">
+                    <span>請先於欲仿製的圖像上按下滑鼠左鍵再按下alt，之後移開，並於欲呈現仿製圖的位置按下滑鼠左鍵並拖拉。</span>
+                </div>
+                <div class="part">
+                    <select id="choose-color">
+                        <option>red</option>
+                        <option>orange</option>
+                        <option>yellow</option>
+                        <option>green</option>
+                        <option>blue</option>
+                        <option>purple</option>
+                        <option>white</option>
+                        <option>black</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+    </section>
+    <div id="eraser-style"></div>
+    <input type="file"><br>
+    <script type="text/javascript" src="hw4.js">
+    </script>
+</body>
+
+</html>
