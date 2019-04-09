@@ -12,12 +12,16 @@
 </head>
 
 <body>
+    <div id="error-container">
+            <h3>注意，您的裝置無法正確使用此網站，請更換裝置。</h3>
+            <button id="error-sub">確定</button>
+    </div>
     <header>
         <h2>PAINT</h2>
         <nav>
             <button id="download"><a id="download_a" download="myCanvas">儲存</a></button>
-            <button id="undo">復原</button>
-            <button id="redo">重作</button>
+            <button id="undo">上一步</button>
+            <button id="redo">下一步</button>
         </nav>
     </header>
     <section class="canSec">
@@ -27,7 +31,8 @@
             <div class="tool">
                 <input id="size" type="range" min="1" max="31" step="1" value="1">
                 <p class="p">1</p>
-                <div id="color"></div>
+                <!-- <div id="color"></div> -->
+                <input type="color" id="color">
             </div>
             <div class="tool">
                 <button id="pencil">鉛筆</button>
@@ -59,19 +64,6 @@
                 </div>
                 <div class="part">
                     <span>請先於欲仿製的圖像上按下滑鼠左鍵再按下alt，之後移開，並於欲呈現仿製圖的位置按下滑鼠左鍵並拖拉。</span>
-                </div>
-                <div class="part">
-                    <select id="choose-color">
-                        <option value="black">black</option>
-                        <option value="white">white</option>
-                        <option value="red">red</option>
-                        <option value="orange">orange</option>
-                        <option value="yellow">yellow</option>
-                        <option value="green">green</option>
-                        <option value="blue">blue</option>
-                        <option value="purple">purple</option>
-                        
-                    </select>
                 </div>
             </div>
         </section>

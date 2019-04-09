@@ -49,11 +49,20 @@ let draw = {
     let content = document.getElementById('content');
     let part = document.getElementsByClassName('part');
     let color = document.getElementById('color');
-    let chooseColor = document.getElementById('choose-color');
 
     if (p[0].innerHTML == 1) {
         p[0].innerHTML = "01";
     }
+    //error event
+    document.getElementById("error-sub").onclick = function(){
+        document.getElementById("error-container").style.display = "none";
+    }
+
+    //detect device width
+    if(window.innerHeight <= canvas.offsetTop + canvas.height && canvas.width < 400){
+        canvas.height = window.innerHeight - canvas.offsetTop - 20;
+    }
+
 
     //events
     download.onclick = function() {
@@ -63,18 +72,23 @@ let draw = {
     undo.onclick = function() {
         let imag = new Image();
         if (draw.setDraw.storeProcess > 0) {
-            draw.setDraw.storeProcess--;    
+            draw.setDraw.storeProcess--;
             imag.src = draw.setDraw.store[draw.setDraw.storeProcess];
             imag.onload = function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(imag, 0, 0);
             };
         } else {
-            draw.setDraw.storeProcess = 0;
-            imag.src = draw.setDraw.store[draw.setDraw.storeProcess];
-            imag.onload = function() {
+            if (draw.setDraw.store.length < 8) {
+                draw.setDraw.storeProcess = -1;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(imag, 0, 0);
+            } else {
+                draw.setDraw.storeProcess = 0;
+                imag.src = draw.setDraw.store[draw.setDraw.storeProcess];
+                imag.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(imag, 0, 0);
+                }
             }
         }
     };
@@ -172,26 +186,21 @@ let draw = {
         };
         if (uploadInput.files[0]) {
             reader.readAsDataURL(uploadInput.files[0]);
-            setTimeout(function() {
-                ctx.drawImage(img, 0, 0);
-                store();
-            }, 2000);
+            if (reader.readyState == 1) {
+                let inter = setInterval(function() {
+                    if (reader.readyState == 2) {
+                        ctx.drawImage(img, 0, 0);
+                        store();
+                        clearInterval(inter);
+                    }
+                }, 100);
+            }
         }
     };
 
-    color.onclick = function(){
-        detectButton();
-        draw.tool.priorButton = this.id;
-
-
-        part[2].classList.add("visible");
-    }
-
-    chooseColor.onchange = function(){
+    color.onchange = function() {
         draw.setDraw.color = this.value;
-        color.style.backgroundColor = this.value;
     }
-
 
     //mouse events
     canvas.onmousedown = function(e) {
@@ -318,7 +327,7 @@ let draw = {
     function store() {
         draw.setDraw.storeProcess++;
         draw.setDraw.store.push(canvas.toDataURL("image/png"));
-        if(draw.setDraw.store.length > 10){
+        if (draw.setDraw.store.length > 10) {
             draw.setDraw.store = draw.setDraw.store.slice(1);
             draw.setDraw.storeProcess--;
         }
@@ -335,9 +344,6 @@ let draw = {
             draw.bol.tamp = 1;
             eraser_style.style.backgroundColor = "white";
             part[1].classList.remove("visible");
-        }
-        if (draw.tool.priorButton == "color") {
-            part[2].classList.remove("visible");
         }
     }
 })();

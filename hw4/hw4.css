@@ -1,5 +1,46 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
 body {
-    background: #000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat;
+    background: #000 url(https://www.script-tutorials.com/demos/360/images/stars.png) repeat;
+}
+
+#error-container {
+	position: fixed;
+	width: 60%;
+	height: 60%;
+	top: 20%;
+	left: 20%;
+	background-color: rgba(102, 102, 102, 0.8);
+	border-radius: 1rem;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+	display: none;
+}
+
+#error-container > h3{
+	width: 100%;
+	color: white;
+	font-size: 1.2rem;
+	padding: 1rem;
+}
+
+#error-container > button{
+	height: 3rem;
+	width: 5rem;
+	background-color: #EF1F1F;
+	border: none;
+	border-radius: 10%;
+	color: white;
+	font-size: 1.5rem;
+}
+
+#error-container > button:hover {
+	opacity: 0.8;
 }
 
 header {
@@ -16,7 +57,7 @@ header * {
 }
 
 header>h2 {
-    margin-left: 2em;
+    margin-left: 2rem;
 }
 
 nav {
@@ -73,13 +114,13 @@ p {
 }
 
 #color {
-    width: 1.5em;
-    height: 1.5em;
+    width: 2em;
+    height: 2em;
     display: inline-block;
-    border-radius: 100%;
-    background-color: black;
-    border: 3px solid white;
+    border-radius: 10%;
+    background-color: rgba(255, 255, 255, 0.9);
     margin-left: 2em;
+    outline: none;
 }
 
 #color:hover {
@@ -111,6 +152,11 @@ p {
     color: black;
 }
 
+.part {
+    display: none;
+    margin: auto;
+}
+
 .part * {
     display: block;
 
@@ -119,12 +165,6 @@ p {
 .part span {
     width: 280px;
     color: rgba(255, 255, 255, 0.8);
-}
-
-
-.part {
-    display: none;
-    margin: auto;
 }
 
 .part button {
@@ -157,7 +197,6 @@ textarea {
     border-top-right-radius: 0em;
     border-bottom-right-radius: 0em;
     border-right: 0;
-    position: relative;
     margin-right: -6px;
 }
 
@@ -198,11 +237,6 @@ input[type=file] {
         flex-wrap: wrap;
     }
 
-    #color {
-        display: block;
-        margin: 2em 0;
-    }
-
     .container {
         margin: auto;
         width: 360px;
@@ -229,5 +263,8 @@ input[type=file] {
     .container {
         border: none;
         width: 100%;
+    }
+    #error-container {
+    	display: flex;
     }
 }
