@@ -188,8 +188,8 @@ let draw = {
     }
 
     chooseColor.onchange = function(){
-        draw.setDraw.color = chooseColor.value;
-        color.style.backgroundColor = chooseColor.value;
+        draw.setDraw.color = this.value;
+        color.style.backgroundColor = this.value;
     }
 
 
@@ -206,7 +206,7 @@ let draw = {
         }
 
         if (draw.bol.drawMode == 4 && draw.tool.text) {
-            ctx.strokeStyle = draw.setDraw.color;
+            ctx.fillStyle = draw.setDraw.color;
             ctx.font = size.value + "px " + font_type.value;
             ctx.fillText(draw.tool.text, e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
             store();
