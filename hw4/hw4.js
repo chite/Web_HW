@@ -59,8 +59,9 @@ let draw = {
     }
 
     //detect device width
-    if(window.innerHeight <= canvas.offsetTop + canvas.height && canvas.width < 400){
-        canvas.height = window.innerHeight - canvas.offsetTop - 20;
+    if(window.innerHeight <= canvas.offsetTop + canvas.height && window.innerWidth > 767){
+        canvas.height = window.innerHeight - canvas.offsetTop;
+        canvas.style.marginBottom = "0";
     }
 
 
