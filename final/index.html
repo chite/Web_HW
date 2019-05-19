@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<style type="text/css">
+body {
+    margin: 0;
+    padding: 0;
+    background: url('img/bg.png');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#elevator {
+    width: 100%;
+    height: auto;
+}
+
+#menu {
+    position: absolute;
+    transition: all 0.5s ease;
+}
+
+#menu.menuMove {
+    transform: translate(0, 31vw);
+}
+
+.icon {
+    position: absolute;
+    left: 7.5em;
+    transition: all 0.5s ease;
+}
+
+.icon.vis {
+    transform: translate(0, -35vw);
+}
+
+div {
+    position: absolute;
+    background-color: #E6E6E6;
+    border: 1px solid gray;
+}
+</style>
+
+<body>
+    <div id="door1"></div>
+    <div id="door2"></div>
+    <img id="elevator" src="img/elevator.png">
+    <img id="menu" src="img/menu.png">
+    <img src="img/account.png" class="icon" id="account">
+    <img src="img/voice.png" class="icon" id="voice">
+    <img src="img/price.png" class="icon" id="price">
+    <img src="img/forum.png" class="icon" id="forum">
+    <!-- <img src="img/report.png" class="icon" id="report"> -->
+    <script type="text/javascript">
+    let doors = $('div');
+    let door1 = $('#door1');
+    let door2 = $('#door2');
+    let menu = $('#menu');
+    let icon = $('.icon');
+    let menuInitialPos = -menu.height() + 170;
+    doors.css({
+        'width': '3.2vw',
+        'height': '12.5vw',
+        'top': '26.3vw',
+    });
+    door1.css({
+        'left': '46.5vw',
+
+    })
+    door2.css({
+        'left': '49.7vw',
+    })
+    door1.hover(() => {
+        door1.css('left', '45.5vw');
+        door2.css('left', '50.7vw');
+    }, () => {
+        door1.css('left', '46.5vw');
+        door2.css('left', '49.7vw');
+    })
+    door2.hover(() => {
+        door1.css('left', '45.5vw');
+        door2.css('left', '50.7vw');
+    }, () => {
+        door1.css('left', '46.5vw');
+        door2.css('left', '49.7vw');
+    })
+    doors.on('click', () => {
+        location.href = "index.html";
+    })
+    menu.css({
+        'top': menuInitialPos,
+        'left': '5.5em',
+    })
+    icon.each((index, value) => {
+        $(value).css('top', 1 + index * 8 + 'vw');
+    });
+    icon.addClass('vis');
+    menu.on('click', () => {
+        menu.toggleClass('menuMove');
+        icon.toggleClass('vis');
+
+    })
+    </script>
+</body>
+
+</html>
