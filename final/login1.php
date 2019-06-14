@@ -1,10 +1,17 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
+    <meta property="og:description" content="政大鬼故事👻" >
     <title>login</title>
+    <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -29,9 +36,11 @@
         height: 90%;
     }
 
-    #photo {
-        width: auto;
-        height: 40%;
+    #photo { 
+    	width: auto;
+    	height: auto;
+    	max-width: 40%;
+        max-height: 40%;
         display: block;
         margin: 2em auto;
     }
@@ -70,25 +79,6 @@
 
     input:-ms-input-placeholder {
         text-align: center;
-    }
-
-    #menu {
-        position: absolute;
-        transition: all 0.5s ease;
-    }
-
-    #menu.menuMove {
-        transform: translate(0, 20em);
-    }
-
-    .icon {
-        position: absolute;
-        left: 5em;
-        transition: all 0.5s ease;
-    }
-
-    .icon.vis {
-        transform: translate(0, -28em);
     }
 
     span {
@@ -142,6 +132,35 @@
         overflow: hidden;
         transition: opacity 2s 0s;
     }
+    img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+        display:none!important;
+    }
+    /*------------spider-------------------*/
+    #menu {
+        position: absolute;
+        transition: all 0.5s ease;
+        z-index: 4;
+        transform: scale(0.5, 0.5);
+        top: -25em;
+        left: 0;
+    }
+
+    #menu.menuMove {
+        transform: translate(0, 10em) scale(0.5, 0.5);
+    }
+
+    .icon {
+        position: absolute;
+        left: 1.8em;
+        transition: all 0.5s ease;
+        z-index: 5;
+        transform: scale(0.5, 0.5);
+    }
+
+    .icon.vis {
+        transform: translate(0, -28em);
+    }
+    /*------------spider-------------------*/
 
     @media only screen and (min-width : 992px) {
         #door {
@@ -161,6 +180,20 @@
             vertical-align: middle;
             height: 100%;
         }
+        /*------------spider-------------------*/
+        #menu{
+            top: -30em;
+            left: 1em;
+            transform: scale(1, 1);
+        }
+        .icon{
+            left: 3em;
+            transform: scale(1, 1);
+        }
+        #menu.menuMove {
+            transform: translate(0, 20em) scale(1, 1);
+        }
+        /*------------spider-------------------*/
     }
 
     @media only screen and (max-width: 991px) {
@@ -186,10 +219,13 @@
 </head>
 
 <body>
+    <!------------spider------------------->
     <img id="menu" src="img/menu.png">
-    <img src="img/account.png" class="icon" id="account">
-    <img src="img/voice.png" class="icon" id="voice">
-    <img src="img/forum.png" class="icon" id="forum">
+    <img src="img/account.png" class="icon vis" id="account">
+    <img src="img/voice.png" class="icon vis" id="voice">
+    <img src="img/forum.png" class="icon vis" id="forum">
+    <audio autoplay loop></audio>
+    <!------------spider------------------->
     <img id="eleBor" src="img/elevatorUI.png">
     <div id="door">
         <div id="pancel">
@@ -215,7 +251,7 @@
                     <br>
                     <i class="fas fa-lock"></i><input type="password" name="reg_password2" placeholder="確認使用者密碼" required>
                     <br>
-                    <span id="fileName"></span>
+                    <span id="remind"></span>
                     <label><input type="file" name="reg_file" accept=".jpg, .jpeg, .png*" style="display:none">上傳頭貼</label>
                     <button type="submit">註冊</button>
                 </form>
@@ -235,15 +271,18 @@
         </div>
     </div>
     <script type="text/javascript">
-    let menu = $('#menu');
-    let icon = $('.icon');
     let span = $('span');
     let pancelBox = $('.pancel-box');
     let uploadPT = $("input[type='file']");
     let toPreviosPage = $('.box-three button');
-    uploadPT.on('change', () => {
-        let hasFile = (uploadPT[0].files[0])?uploadPT[0].files[0].name: '未上傳頭貼';
-        $('#fileName').text(hasFile);
+    uploadPT.on('change', function(){
+        if(this.files[0]){
+        	let reader = new FileReader();
+        	reader.readAsDataURL(this.files[0]);
+        	reader.onload = function(e){
+        		$('#photo').attr('src', e.target.result);
+        	}
+        }
     })
     span.eq(0).on('click', () => {
         $('.box-one').css({
@@ -285,19 +324,85 @@
             'opacity': 0
         })
     })
-    menu.css({
-        'top': '-475px',
-        'left': '3em',
-    });
-    icon.each((index, value) => {
-        $(value).css('top', 1 + index * 7 + 'em');
-    });
-    icon.addClass('vis');
-    menu.on('click', () => {
-        menu.toggleClass('menuMove');
-        icon.toggleClass('vis');
+    $('input[name="reg_password2"]').on('keyup keydown',()=>{
+    	if($('input[name="reg_password2"]').val() !== $('input[name="reg_password"]').val()){
+    		$('#remind').text('密碼驗證不一致');
+    	}else{
+    		$('#remind').text('');
+    	}
+    })
+    /*------------spider-------------------*/
+    let menu = $('#menu');
+    let icon = $('.icon');
+    let voice = <?php include('voice.php'); ?>; 
+        
+    if (screen.width > 991) {
 
+        icon.each((index, value) => {
+            $(value).css('top', 1 + index * 7 + 'em');
+        });   
+    } else {
+        icon.each((index, value) => {
+            $(value).css('top', 0.5 + index * 3 + 'em');
+        });
+    }
+    menu.on('click', () => {
+            menu.toggleClass('menuMove');
+            icon.toggleClass('vis');
     });
+    //voice
+    if(voice == '0'){
+        $('audio').attr('src', '');
+        $('#voice').attr('src', 'img/voice_block.png');
+    }else{
+        $('audio').attr('src', 'img/bgm.mp3');
+        setTimeout(function(){
+            if($('audio')[0].paused){
+                $('.icon').eq(1).click();
+            }
+        }, 1000);
+    }
+    //button
+    for(let i = 0; i < 3; i ++){
+        $('.icon').eq(i).on('click', e=>{
+            switch(e.target.id){
+                case 'account':
+                    location.href = 'profile.php';
+                break;
+                case 'voice':
+                    let voice_state = null;
+                    if($('audio').attr('src')){
+                        $('audio').attr('src', '');
+                        $('#voice').attr('src', 'img/voice_block.png');
+                         voice_state = '0';
+                    }else{
+                        $('audio').attr('src', 'img/bgm.mp3');
+                        $('#voice').attr('src', 'img/voice.png');
+                        voice_state = '1';
+                    }
+                    let formData = new FormData();
+                    formData.append('voice', voice_state);
+                    fetch('voice.php',{
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response=>
+                        response.text())
+                    .then(response=>{
+                        console.log(response);
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+
+                break;
+                case 'forum':
+                    location.href = 'board.php';
+                break;
+            }
+        })
+    }
+    /*------------spider-------------------*/
     </script>
 </body>
 

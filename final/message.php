@@ -7,8 +7,17 @@
         if($sth->rowCount() == 0){
             die();
         }
+        if(isset($_GET['id'])){
+            $sth = $dbh->prepare('SELECT id FROM board WHERE id = ?');
+            $sth->execute(array($_GET['id']));
+            if($sth->rowCount() == 0){
+                die();
+            }
+        }else{
+            die();
+        }
     }else{
-        die('您尚未登入，請前往<a href="login1.php">登入頁面</a>進行登入');
+    die();
     }
 ?>
 <!DOCTYPE html>
@@ -20,7 +29,7 @@
     <meta property="og:title" content="政大鬼故事" >
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
     <meta property="og:description" content="政大鬼故事👻" >
-    <title>Board</title>
+    <title>board</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
@@ -32,12 +41,14 @@
         background-color: #CCCCCC;
         height: 100%;
     }
+    h2, p, input, button, textarea, span{
+        font-family: 'Noto Sans TC', sans-serif;
+    }
 
     .top-nav {
         width: 95%;
         height: 8%;
         margin: 1em auto;
-        text-align: center;
     }
 
     .container {
@@ -52,16 +63,7 @@
 
     .search-edit {
         display: inline-block;
-    }
-
-    .search-edit input {
-        background-color: #E6E6E6;
-        height: 2em;
-        border: none;
-        border-radius: 1em;
-        outline: none;
-        padding-left: 0.5em;
-        box-sizing: border-box;
+        float: right;
     }
 
     .search-edit button {
@@ -70,7 +72,7 @@
         border: none;
         border-radius: 100%;
         padding: 1em 1.2em;
-        margin-left: 0.5em;
+        margin-left: 1em;
     }
 
     aside button {
@@ -94,17 +96,21 @@
         border-radius: 0.5em;
         box-sizing: border-box;
     }
-
-    .bottom-nav div {
-        display: inline-block;
+    .bottom-nav div{
+        display: block;
         background-color: #B3B3B3;
         margin: 1em;
         padding: 0.5em;
         border-radius: 0.5em;
         box-sizing: border-box;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
+        min-height: 2em;
+    }
+    .bottom-nav div+div, #chat-icon {
+        background-color: #666666;
+        color: white;
+        display: flex;
+        vertical-align: middle;
+        align-items: center;
     }
 
     .bottom-nav img {
@@ -198,9 +204,6 @@
     }
     .message-title span:nth-child(4){
         font-size: 1.2em;
-        background-color:#666666;
-        color: white;
-        border-radius: 0.5em;
         padding: 0.3em;
         box-sizing: border-box;
         float: right;
@@ -212,10 +215,15 @@
     .message-title p {
         word-break: break-all;
     }
+    hr {
+        border:1.5px;
+        border-style: dashed;
+        color: black;
+    }
     img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
         display:none!important;
     }
-     /*------------spider-------------------*/
+    /*------------spider-------------------*/
     #menu {
         position: absolute;
         transition: all 0.5s ease;
@@ -245,7 +253,6 @@
         #back {
             display: inline-block;
         }
-
         .container {
             width: 90%;
             text-align: left;
@@ -254,9 +261,6 @@
             width: 75%;
             text-align: left;
             margin: 1em 5% 1em auto;
-        }
-        .search-edit {
-            float: right;
         }
 
         aside {
@@ -279,7 +283,17 @@
             display: block;
             clear: both;
         }
-
+        #chat-icon, .bottom-nav div{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .bottom-nav{
+            position: relative;
+        }
+        .bottom-nav div+div{
+            float: right;
+            min-height: 4em;
+        }
         .bottom-nav h2 {
             display: inline-block;
             margin: 0 1em;
@@ -320,9 +334,7 @@
     <!------------spider------------------->
     <nav class="top-nav">
         <i class="fas fa-arrow-alt-circle-left fa-3x" id="back"></i>
-        <form class="search-edit" method="GET" action="board.php">
-            <input type="text" name="search">
-            <button type="submit"><i class="fas fa-search" style="color: white;"></i></button>
+        <form class="search-edit">
             <button type="submit" id="edit"><i class="fas fa-pencil-alt" style="color: white;"></i></button>
             <button title="登出" id="sign_out"><i class="fas fa-sign-out-alt" style="color: white;"></i></button>
         </form>
@@ -347,148 +359,109 @@
                     }else{
                         echo '<img src="data:'.$row['img_name'].';base64,'.base64_encode($row['img']).'">';
                     }
-                    echo '<h2>'.$_SESSION['name'].'</h2>';
+                    echo '<h2>'.$_SESSION['name'].'</h2>    
+                </div>
+                <div>';
+                    $sth = $dbh->prepare('SELECT belong FROM board WHERE id = ?');
+                    $sth->execute(array($_GET['id']));
+                    $row = $sth->fetch(PDO::FETCH_ASSOC);
+                    echo '<h2>'.$row['belong'].'</h2>
+                </div>
+                <div>
+                    <i class="fas fa-comment-dots fa-3x" id="chat-icon"></i>';
+                    $sth = $dbh->prepare('SELECT COUNT(id) AS \'SUM\' FROM message WHERE belong = ?');
+                    $sth->execute(array($_GET['id']));
+                    $row = $sth->fetch(PDO::FETCH_ASSOC);
+                    echo '<h2>'.$row['SUM'].'</h2>';
                     ?>
                     <!----------------------------------------->
                 </div>
             </nav>
             <section class="chat-content">
-                <form method="post" action="board_send.php" class="post-content">
-                    <input type="text" name="title" placeholder="請輸入標題">
-                    <textarea name="content" rows="5" placeholder="請輸入內容"></textarea>
-                    <select name="belong">
-                        <option value="聊天">聊天</option>
-                        <option value="問題回報">問題回報</option>
-                    </select>
-                    <button type="submit">送出</button>
-                </form>
                 <!----------------------------------------->
                 <?php
-                if(isset($_GET['search'])){ //如果按搜尋
-                    $sql = 'SELECT owner_name, title FROM board';
-                    $sth = $dbh->prepare($sql);
-                    $sth->execute();
-                    $photoArr = [];
-                    $titleArr = [];
-                    $photos = [];
-                    while($row = $sth->fetch(PDO::FETCH_ASSOC)){
-                        array_push($titleArr, $row['title']); 
-                        array_push($photoArr, $row['owner_name']); 
-                    }
-                    $titleArrNum = count($titleArr);
-                    for($i=0; $i<$titleArrNum; $i++){
-                        if(stristr($titleArr[$i], $_GET['search']) == FALSE){
-                            unset($titleArr[$i]);
-                            unset($photoArr[$i]);
-                        }
-                    }
-                    $titleArr = array_values($titleArr); //篩選出的標題陣列
-                    $photoArr = array_values($photoArr);
-                    for($i=0; $i<count($photoArr); $i++){
-                        $sql = 'SELECT img, img_name FROM account WHERE name = ?';
-                        $sth = $dbh->prepare($sql);
-                        $sth->execute(array($photoArr[$i]));
-                        $pt = $sth->fetch(PDO::FETCH_NUM);
-                        array_push($photos, $pt[0]); //圖片檔
-                        $photoArr[$i] = $pt[1]; //圖片副檔名
-                    }
-
-                    for($i=0; $i<count($titleArr); $i++){
-                        $sql = 'SELECT id, title, content, owner_name, time, belong FROM board WHERE title = ?';
-                        $sth = $dbh->prepare($sql);
-                        $sth->execute(array($titleArr[$i]));
-                        $row = $sth->fetch(PDO::FETCH_ASSOC);
-                        echo 
-                        '<article class="message-title">
-                            <nav>';
-                                if($photos[$i] === '1'){
-                                    echo '<img src="img/photo.png">';
-                                }else{
-                                    echo '<img src="data:'.$photoArr[$i].';base64,'.base64_encode($photos[$i]).'">';
-                                }
-                        echo
-                                
-                                '<span>'.$row['owner_name'].'</span>
-                                <span>'.$row['time'].'</span>
-                                <span>'.$row['belong'].'</span>
-                            </nav>
-                            <a href="message.php?id='.$row['id'].'">
-                                <h2>'.$row['title'].'</h2>
-                                <p>'.$row['content'].'</p>
-                            </a>
-                        </article>';
-                    }
+                $sth = $dbh->prepare('SELECT title, content, owner_name, time, response FROM board WHERE id = ?');
+                $sth->execute(array($_GET['id']));
+                $row = $sth->fetch(PDO::FETCH_ASSOC);
+                $sth1 = $dbh->prepare('SELECT img, img_name FROM account WHERE name = ?');
+                $sth1->execute(array($row['owner_name']));
+                $row1 = $sth1->fetch(PDO::FETCH_ASSOC);
+                echo 
+                '<article class="message-title">
+                    <nav>';
+                if($row1['img'] == 1){
+                    echo '<img src="img/photo.png">';
                 }else{
-                    if(isset($_GET['page'])){ //判斷左方按鈕按下哪個或沒按
-                        if($_GET['page'] == 2){
-                            $page1 = '聊天';
-                            $page2 = '聊天';
-                        }elseif($_GET['page'] == 3){
-                            $page1 = '問題回報';
-                            $page2 = '問題回報';
-                        }else{
-                           $page1 = '聊天'; 
-                           $page2 = '問題回報';
-                        }
-                         
-                    }else{
-                        $page1 = '聊天'; 
-                        $page2 = '問題回報';
-                    }
-                    
-                    $sql = 'SELECT owner_name FROM board WHERE belong = ? OR belong = ?';
-                    $sth = $dbh->prepare($sql);
-                    $sth->execute(array($page1, $page2));
-                    $photoArr = [];
-                    $photos = [];
-                    while($photoRow = $sth->fetch(PDO::FETCH_ASSOC)){
-                        array_push($photoArr, $photoRow['owner_name']); 
-                    }
+                    echo '<img src="data:'.$row1['img_name'].';base64,'.base64_encode($row1['img']).'">';
+                }
+                echo 
+                        '<span>'.$row['owner_name'].'</span>
+                        <span>'.$row['time'].'</span>
+                    </nav>
+                    <h2>'.$row['title'].'</h2>
+                    <p>'.$row['content'].'</p>
+                    <hr/>
+                    <p id="manager_edit1">管理員回覆：</p>';
+                if(empty($row['response'])){
+                    echo '<p id="manager_edit2">尚無回應</p>';
+                }else{
+                    echo '<p id="manager_edit2">'.$row['response'].'</p>';
+                }
+                echo
+                '</article>';
 
-                    for($i = 0; $i < count($photoArr); $i++){
-                        $sql = 'SELECT img, img_name FROM account WHERE name = ?';
-                        $sth = $dbh->prepare($sql);
-                        $sth->execute(array($photoArr[$i]));
-                        $pt = $sth->fetch(PDO::FETCH_NUM);
-                        array_push($photos, $pt[0]); 
-                        $photoArr[$i] = $pt[1];
+                //存取留言照片
+                $img = [];
+                $img_name = [];
+                $sth = $dbh->prepare('SELECT owner_name FROM message WHERE belong = ?');
+                $sth->execute(array($_GET['id']));
+                while($row = $sth->fetch(PDO::FETCH_ASSOC)){
+                    $sth1 = $dbh->prepare('SELECT img, img_name FROM account WHERE name = ?');
+                    $sth1->execute(array($row['owner_name']));
+                    $row1 = $sth1->fetch(PDO::FETCH_ASSOC);
+                    array_push($img, $row1['img']);
+                    array_push($img_name, $row1['img_name']);
+                }
+                //存取留言
+                $sth = $dbh->prepare('SELECT id, owner_name, content, time FROM message WHERE belong = ?');
+                $sth->execute(array($_GET['id']));
+                $x = 0;
+                while($row = $sth->fetch(PDO::FETCH_ASSOC)){
+                    echo
+                    '<article class="message-title">
+                        <nav>';
+                        if($img[$x] == 1){
+                            echo '<img src="img/photo.png">';
+                        }else{
+                            echo '<img src="data:'.$img_name[$x].';base64,'.base64_encode($img[$x]).'">';
+                        }
+                        $x++;
+                    echo 
+                        '<span>'.$row['owner_name'].'</span>
+                        <span>'.$row['time'].'</span>';
+                    if($_SESSION['name'] == $row['owner_name'] || 'chite' == $_SESSION['name']){
+                        echo '<span><a href="message_delete.php?id='.$_GET['id'].'&del='.$row['id'].'">X</a></span>';
                     }
-                    $sql = 'SELECT id, title, content, owner_name, time, belong FROM board WHERE belong = ? OR belong = ?';
-                    $sth = $dbh->prepare($sql);
-                    $sth->execute(array($page1, $page2));
-                    $x = 0;
-                    while($row = $sth->fetch(PDO::FETCH_ASSOC)){
-                        echo 
-                        '<article class="message-title">
-                            <nav>';
-                        
-                                if($photos[$x] == 1){
-                                    echo '<img src="img/photo.png">';
-                                }else{
-                                    echo '<img src="data:'.$photoArr[$x].';base64,'.base64_encode($photos[$x]).'">';
-                                }
-                                $x++;
-                        echo
-                                
-                                '<span>'.$row['owner_name'].'</span>
-                                <span>'.$row['time'].'</span>
-                                <span>'.$row['belong'].'</span>
-                            </nav>
-                            <a href="message.php?id='.$row['id'].'">
-                                <h2>'.$row['title'].'</h2>
-                                <p>'.$row['content'].'</p>
-                            </a>
-                        </article>';
-                    };
-                }    
+                    echo
+                        '</nav>
+                        <p>'.$row['content'].'</p>
+                    </article>';
+                }
                 ?>
                 <!----------------------------------------->
+                <form method="POST" action="message_send.php" class="post-content">
+                    <input type="hidden" name="id" value="11">
+                    <textarea name="content" rows="5" placeholder="請輸入文字發表留言"></textarea>
+                    <button type="submit">送出</button>
+                </form>
             </section>
         </section>
     </div>
     <script type="text/javascript">
     	let $edit = $('#edit');
     	let $post_content = $('.post-content');
+        let url = location.href.slice(location.href.indexOf('=')+1);
+        let val = null;
     	$edit.on('click', e =>{
     		e.preventDefault();
     		$post_content.toggleClass('visible');
@@ -506,6 +479,21 @@
                 location.href = 'board.php?page='+(i+1);
             })
         }
+        $('input[type="hidden"]').attr('value', url);
+
+        $('#manager_edit1').on('dblclick',e=>{
+            if(val === null){
+                val = $('#manager_edit2').text();
+            }
+            if($('#manager_edit2').find('input').length){
+                $('#manager_edit2').text(val);
+            }else{
+                $('#manager_edit2').text('').append($(
+                '<form method="POST" action="edit.php" class="edit_p"><input type="text" name="success_edit"><input type="hidden" name="id"><button type="submit">確認</button><button type="reset">取消</button></form>'
+                ));
+                $('input[type="hidden"]').attr('value', url);
+            }     
+        });
         /*------------spider-------------------*/
         let menu = $('#menu');
         let icon = $('.icon');
@@ -533,7 +521,7 @@
             $('audio').attr('src', 'img/bgm.mp3');
             setTimeout(function(){
                 if($('audio')[0].paused){
-                        $('.icon').eq(1).click();
+                    $('.icon').eq(1).click();
                 }
             }, 1000);
         }
@@ -578,6 +566,7 @@
             })
         }
         /*------------spider-------------------*/
+    </script>
     </script>
 </body>
 
