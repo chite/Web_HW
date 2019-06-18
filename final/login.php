@@ -13,7 +13,6 @@ if(isset($_POST['name']) && isset($_POST['password']) && $_POST['name'] !== '' &
         if($sth->rowCount() >= 1){ //有帳密
         	$_SESSION['name'] = $name;
             $_SESSION['password'] = $password;
-            echo '<script>alert(\'輸入成功，前往遊戲\')</script>';
 			die('<meta http-equiv="refresh" content="0; url=map1.php">');
         }else{
         	echo '<script>alert(\'輸入錯誤\')</script>';
@@ -34,6 +33,10 @@ if(isset($_POST['name']) && isset($_POST['password']) && $_POST['name'] !== '' &
 		die('<meta http-equiv="refresh" content="0; url=login1.php">');
 	}	
 	if(isset($_FILES['reg_file'])){	//如果上傳頭貼
+		if($_FILES["reg_file"]["size"]/1024 > 100){
+			echo '<script>alert(\'頭貼檔案過大\')</script>';
+			die('<meta http-equiv="refresh" content="0; url=login1.php">');
+		}
 		$extension = explode(".", $_FILES["reg_file"]["name"]);
 		$extension =  strtolower(end($extension));
 		if(in_array($extension, array('jpeg', 'jpg', 'png'))){

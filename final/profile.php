@@ -17,40 +17,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:title" content="逃出絕命政" >
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
-    <meta property="og:description" content="政大鬼故事👻" >
-    <title>Profile</title>
+    <meta property="og:description" content="👻👻👻" >
+    <title>逃出絕命政-個人檔案</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="spider/spider.css">
     <style type="text/css">
-    /*------------spider-------------------*/
-    #menu {
-        position: absolute;
-        transition: all 0.5s ease;
-        z-index: 4;
-        transform: scale(0.5, 0.5);
-        top: -25em;
-        left: 0;
-    }
-
-    #menu.menuMove {
-        transform: translate(0, 10em) scale(0.5, 0.5);
-    }
-
-    .icon {
-        position: absolute;
-        left: 1.8em;
-        transition: all 0.5s ease;
-        z-index: 5;
-        transform: scale(0.5, 0.5);
-    }
-
-    .icon.vis {
-        transform: translate(0, -28em);
-    }
-    /*------------spider-------------------*/
     html,
     body {
         margin: 0;
@@ -72,7 +47,8 @@
         overflow: hidden;
         position: relative;
         padding: 0.5em;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
 
     .bottom {
@@ -113,7 +89,6 @@
 
     .col-3 {
         width: 25%;
-        /*height: 100%;*/
         display: inline-block;
         vertical-align: top;
 
@@ -130,7 +105,8 @@
         border-radius: 0.5em;
         color: white;
         padding: 0.5em;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
 
     .inner-col {
@@ -140,12 +116,15 @@
         vertical-align: middle;
         border-radius: 16px;
         padding: 1em;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
     form {
         visibility: hidden;
         height: auto;
         opacity: 0;
+        -webkit-transition: all 1s 0s;
+        -o-transition: all 1s 0s;
         transition: all 1s 0s;
     }
     .visible {
@@ -180,7 +159,8 @@
 		margin-top: 0.5em;
 		font-size: 1em;
         font-family: 'Noto Sans TC', sans-serif;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
     }
 	.triangle{
 	width: 0;
@@ -228,7 +208,7 @@
         }
 
         #user-pt img {
-            width: 90%;
+            max-width: 90%;
             height: auto;
             max-height: 60%;
         }
@@ -250,21 +230,6 @@
         .inner-col {
             height: 50%;
         }
-        /*------------spider-------------------*/
-        #menu{
-            top: -30em;
-            left: 1em;
-            transform: scale(1, 1);
-        }
-        .icon{
-            left: 3em;
-            transform: scale(1, 1);
-        }
-        #menu.menuMove {
-            transform: translate(0, 20em) scale(1, 1);
-        }
-        /*------------spider-------------------*/
-
     }
     </style>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -308,8 +273,8 @@
                     ?>
                 </div>
                 <form action="profile_edit.php" method="POST" enctype="multipart/form-data">
-                    <input type="text" name="new" placeholder="請輸入新名稱/新信箱/新密碼">
-                    <input type="password" name="password" placeholder="請輸入密碼/新密碼">
+                    <input type="text" name="new" placeholder="" autocomplete="nope">
+                    <input type="password" name="password" placeholder=""  autocomplete="nope">
                     <input type="hidden" name="page" value="">
                     <input type="file" name="img" accept=".jpg, .jpeg, .png*" style="display: none;">
                     <button>送出</button>
@@ -329,79 +294,19 @@
     </article>
     <script type="text/javascript">
     let logo_state = <?php echo json_encode(explode(',',$row['logo'])); ?>;
-    /*------------spider-------------------*/
-    let menu = $('#menu');
-    let icon = $('.icon');
-    let voice = <?php include('voice.php'); ?>; 
-        
-    if (screen.width > 991) {
-
-        icon.each((index, value) => {
-            $(value).css('top', 1 + index * 7 + 'em');
-        });   
-    } else {
-        icon.each((index, value) => {
-            $(value).css('top', 0.5 + index * 3 + 'em');
-        });
-    }
-    menu.on('click', () => {
-            menu.toggleClass('menuMove');
-            icon.toggleClass('vis');
-    });
-    //voice
-    if(voice == '0'){
-        $('audio').attr('src', '');
-        $('#voice').attr('src', 'img/voice_block.png');
-    }else{
-        $('audio').attr('src', 'img/bgm.mp3');
-        setTimeout(function(){
-            if($('audio')[0].paused){
-                $('.icon').eq(1).click();
-            }
-        }, 1000);
-    }
-    //button
-    for(let i = 0; i < 3; i ++){
-        $('.icon').eq(i).on('click', e=>{
-            switch(e.target.id){
-                case 'account':
-                break;
-                case 'voice':
-                    let voice_state = null;
-                    if($('audio').attr('src')){
-                        $('audio').attr('src', '');
-                        $('#voice').attr('src', 'img/voice_block.png');
-                         voice_state = '0';
-                    }else{
-                        $('audio').attr('src', 'img/bgm.mp3');
-                        $('#voice').attr('src', 'img/voice.png');
-                        voice_state = '1';
-                    }
-                    let formData = new FormData();
-                    formData.append('voice', voice_state);
-                    fetch('voice.php',{
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response=>
-                        response.text())
-                    .then(response=>{
-                        console.log(response);
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
-
-                break;
-                case 'forum':
-                    location.href = 'board.php';
-                break;
-            }
-        })
-    }
-    /*------------spider-------------------*/
+    let voice = <?php include('voice.php'); ?>; //for spider
     for(let i=0; i<3; i++){ //右方按鈕
-        $('.col-3 button').eq(i).on('click', e =>{
+        $('.col-3 button').eq(i).on('click', function(e){
+        	if(i === 0){ //信箱
+        		 $('input[name="new"]').attr({'placeholder': '請輸入新信箱', 'type': 'email'});
+        		 $('input[name="password"]').attr('placeholder', '請輸入密碼');
+        	}else if(i === 1){ //名稱
+        		$('input[name="new"]').attr({'placeholder': '請輸入新名稱', 'type': 'text'});
+        		$('input[name="password"]').attr('placeholder', '請輸入密碼');
+        	}else{ //密碼
+        		$('input[name="new"]').attr({'placeholder': '請輸入新密碼', 'type': 'text'});
+        		$('input[name="password"]').attr('placeholder', '請再次輸入新密碼');
+        	}
             $('input[type="hidden"]').attr('value', i);
             $('.col-3 button').each(function(){
                 $(this).css('background-color', '#666666');
@@ -409,7 +314,7 @@
             $(e.target).css('background-color', '#424242');
             if($('form').hasClass('visible')){
                 $('form').removeClass('visible');
-                setTimeout(()=>{
+                setTimeout(function(){
                     $('form').addClass('visible');
                 }, 500);
             }else{
@@ -418,24 +323,28 @@
             
         })
     }
-    logo_state.forEach((value,index) =>{
+    logo_state.forEach(function(value,index){
         if(value === '0'){
-            $('.logo').eq(index).css('filter', 'brightness(0.2)');
+            $('.logo').eq(index).css({
+                '-webkit-filter': 'brightness(0.2)',
+                'filter': 'brightness(0.2)'
+            });
         }
     })
-    $('#back').on('click', ()=>{
+    $('#back').on('click', function(){
             history.back();
     })
-     $('#sign_out').on('click', e =>{
+     $('#sign_out').on('click', function(e){
         location.href = 'sign_up.php';
     })
-    $('#user-pt img').on('click', ()=>{
+    $('#user-pt img').on('click', function(){
         $('input[type="file"]').click();
-        $('input[type="file"]').on('change', ()=>{
+        $('input[type="file"]').on('change', function(){
             $('form button').click();
         })
     })
     </script>
+    <script type="text/javascript" src="spider/spider.js"></script>
 </body>
 
 </html>

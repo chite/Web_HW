@@ -1,15 +1,15 @@
 <?php
-session_start();
-include('connect.php');
-if(isset($_SESSION['name'])){
-    $sth = $dbh->prepare('SELECT id FROM account WHERE name = ?');
-    $sth->execute(array($_SESSION['name']));
-    if($sth->rowCount() == 0){
-        die();
+    session_start();
+    include('connect.php');
+    if(isset($_SESSION['name'])){
+        $sth = $dbh->prepare('SELECT logo FROM account WHERE name = ?');
+        $sth->execute(array($_SESSION['name']));
+        if($sth->rowCount() == 0){
+            die();
+        }
+    }else{
+        die('您尚未登入，請前往<a href="login1.php">登入頁面</a>進行登入');
     }
-}else{
-die();
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,14 +17,15 @@ die();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:title" content="逃出絕命政" >
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
-    <meta property="og:description" content="政大鬼故事👻" >
-    <title>Map</title>
+    <meta property="og:description" content="👻👻👻" >
+    <title>逃出絕命政-地圖</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="spider/spider.css">
     <style type="text/css">
     html,
     body {
@@ -40,7 +41,9 @@ die();
         width: 80%;
         top: 99%;
         left: 50%;
-        transform: translate(-50%, -100%);
+        -webkit-transform: translate(-50%, -100%);
+            -ms-transform: translate(-50%, -100%);
+                transform: translate(-50%, -100%);
         margin: 0 auto;
         z-index: 3;
         font-family: 'Noto Sans TC', sans-serif;
@@ -64,18 +67,22 @@ die();
         left: 0;
         right: 0;
         z-index: 2;
-        transform: rotate(360deg);
-        transition: transform 3s 0s;
+        -webkit-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+                transform: rotate(360deg);
+        -webkit-transition: all 3s 0s;
+        -o-transition: all 3s 0s;
+        transition: all 3s 0s;
     }
 
     #gossip:hover {
-        filter: brightness(0.8);
+        -webkit-filter: brightness(0.8);
+                filter: brightness(0.8);
     }
 
     section {
         position: absolute;
         width: 60vw;
-        /*height: 22vh;*/
         visibility: hidden;
         height: 0;
         overflow: hidden;
@@ -89,7 +96,10 @@ die();
         z-index: 2;
         border-radius: 0.8em;
         padding: 0.5em;
-        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        -webkit-transition: all 1.5s 0s;
+        -o-transition: all 1.5s 0s;
         transition: all 1.5s 0s;
     }
 
@@ -101,7 +111,9 @@ die();
         position: relative;
         text-align: center;
         top: 50%;
-        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
     }
     .top-icons {
         float: right;
@@ -119,32 +131,6 @@ die();
     img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
         display:none!important;
     }
-     /*------------spider-------------------*/
-    #menu {
-        position: absolute;
-        transition: all 0.5s ease;
-        z-index: 4;
-        transform: scale(0.5, 0.5);
-        top: -25em;
-        left: 0;
-    }
-
-    #menu.menuMove {
-        transform: translate(0, 10em) scale(0.5, 0.5);
-    }
-
-    .icon {
-        position: absolute;
-        left: 1.8em;
-        transition: all 0.5s ease;
-        z-index: 5;
-        transform: scale(0.5, 0.5);
-    }
-
-    .icon.vis {
-        transform: translate(0, -28em);
-    }
-    /*------------spider-------------------*/
 
     @media only screen and (min-width : 992px) {
         #mapid {
@@ -153,20 +139,6 @@ die();
         #sign_out{
             margin-right: 5vw;
         }
-        /*------------spider-------------------*/
-        #menu{
-            top: -30em;
-            left: 1em;
-            transform: scale(1, 1);
-        }
-        .icon{
-            left: 3em;
-            transform: scale(1, 1);
-        }
-        #menu.menuMove {
-            transform: translate(0, 20em) scale(1, 1);
-        }
-        /*------------spider-------------------*/
     }
     </style>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
@@ -193,6 +165,7 @@ die();
         <p></p>
     </section>
     <script type="text/javascript">
+    let voice = <?php include('voice.php'); ?>; //for spider
     let $h2 = $('h2');
     let $gossip = $('#gossip');
     let mymap = L.map('mapid');
@@ -210,7 +183,7 @@ die();
     remind();
     //map測試裝置
     if ("geolocation" in navigator) {
-        inter = setInterval(() => {
+        inter = setInterval(function(){
             getLocation();
         }, 5000);
     } else {
@@ -250,7 +223,7 @@ die();
 
     function remind() {
         let count = 5;
-        remindInter = setInterval(() => {
+        remindInter = setInterval(function(){
             $h2.text(count + " 秒後重新鎖定位置");
             count--;
             if (count < 0) {
@@ -261,25 +234,33 @@ die();
     }
     //點擊八卦圖
     console.log()
-    $gossip.on('click', () => {
+    $gossip.on('click', function(){
         let values = $gossip.css('transform').split('(')[1].split(')')[0].split(',');
         let formData = new FormData();
         formData.append('position', playPos);
         if (values[1] == 0 && values[2] == 0) {
-            $gossip.css('transform', 'rotate(360deg)');
+            $gossip.css({
+                '-webkit-transform': 'rotate(360deg)',
+                '-ms-transform': 'rotate(360deg)',
+                'transform': 'rotate(360deg)'
+            });
         } else {
-            $gossip.css('transform', 'rotate(0deg)');
+            $gossip.css({
+                '-webkit-transform': 'rotate(0deg)',
+                '-ms-transform': 'rotate(0deg)',
+                'transform': 'rotate(0deg)'
+            });
         }
         if (playPos[0] > 24.987710 && playPos[0] < 24.988657 && playPos[1] > 121.576736 && playPos[1] < 121.577608) {
             popContent('莊外');
         } else if(playPos[0] > 24.98709 && playPos[0] < 24.98746 && playPos[1] > 121.576247 && playPos[1] < 121.57671){
             popContent('研究大樓');
-             setTimeout(()=>{
+             setTimeout(function(){
                 location.href = 'story2.php';
             }, 5000);
         } else if(playPos[0] > 24.985674 && playPos[0] < 24.986664 && playPos[1] > 121.573192 && playPos[1] < 121.574){
             popContent('綜合院館');
-             setTimeout(()=>{
+             setTimeout(function(){
                 location.href = 'story1.php';
             }, 5000);
         } else {
@@ -295,7 +276,7 @@ die();
             'height': '22vh',
             'opacity': '1'
         })
-        setTimeout(() => {
+        setTimeout(function(){
             $pop.css({
                 'visibility': 'hidden',
                 'height': '0',
@@ -304,85 +285,14 @@ die();
         }, 3000);
 
     }
-    $('#back').on('click', ()=>{
+    $('#back').on('click', function(){
             history.back();
     })
-     $('#sign_out').on('click', e =>{
+     $('#sign_out').on('click', function(e){
         location.href = 'sign_up.php';
     })
-     /*------------spider-------------------*/
-    let menu = $('#menu');
-    let icon = $('.icon');
-    let voice = <?php include('voice.php'); ?>; 
-        
-    if (screen.width > 991) {
-
-        icon.each((index, value) => {
-            $(value).css('top', 1 + index * 7 + 'em');
-        });   
-    } else {
-        icon.each((index, value) => {
-            $(value).css('top', 0.5 + index * 3 + 'em');
-        });
-    }
-    menu.on('click', () => {
-            menu.toggleClass('menuMove');
-            icon.toggleClass('vis');
-    });
-    //voice
-    if(voice == '0'){
-        $('audio').attr('src', '');
-        $('#voice').attr('src', 'img/voice_block.png');
-    }else{
-        $('audio').attr('src', 'img/bgm.mp3');
-        setTimeout(function(){
-            if($('audio')[0].paused){
-                $('.icon').eq(1).click();
-            }
-        }, 1000);
-    }
-    //button
-    for(let i = 0; i < 3; i ++){
-        $('.icon').eq(i).on('click', e=>{
-            switch(e.target.id){
-                case 'account':
-                    location.href = 'profile.php';
-                break;
-                case 'voice':
-                    let voice_state = null;
-                    if($('audio').attr('src')){
-                        $('audio').attr('src', '');
-                        $('#voice').attr('src', 'img/voice_block.png');
-                         voice_state = '0';
-                    }else{
-                        $('audio').attr('src', 'img/bgm.mp3');
-                        $('#voice').attr('src', 'img/voice.png');
-                        voice_state = '1';
-                    }
-                    let formData = new FormData();
-                    formData.append('voice', voice_state);
-                    fetch('voice.php',{
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response=>
-                        response.text())
-                    .then(response=>{
-                        console.log(response);
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
-
-                break;
-                case 'forum':
-                    location.href = 'board.php';
-                break;
-            }
-        })
-    }
-    /*------------spider-------------------*/
     </script>
+    <script type="text/javascript" src="spider/spider.js"></script>
 </body>
 
 </html>

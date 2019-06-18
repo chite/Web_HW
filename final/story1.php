@@ -8,7 +8,7 @@
             die();
         }
     }else{
-        die('您尚未登入，請前往<a href="login.html">登入頁面</a>進行登入');
+        die('您尚未登入，請前往<a href="login1.php">登入頁面</a>進行登入');
     }
 ?>
 
@@ -18,13 +18,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:title" content="逃出絕命政">
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
-    <meta property="og:description" content="政大鬼故事👻" >
-    <title>綜合院館</title>
+    <meta property="og:description" content="👻👻👻" >
+    <title>逃出絕命政-綜合院館</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="spider/spider.css">
     <style type="text/css">
     html,
     body {
@@ -107,35 +108,12 @@
         bottom: 2em;
         font-size: 2.5em;
     }
+    .wrapper{
+    	position: relative;
+    }
     img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
         display:none!important;
     }
-    /*------------spider-------------------*/
-    #menu {
-        position: absolute;
-        transition: all 0.5s ease;
-        z-index: 4;
-        transform: scale(0.5, 0.5);
-        top: -25em;
-        left: 0;
-    }
-
-    #menu.menuMove {
-        transform: translate(0, 10em) scale(0.5, 0.5);
-    }
-
-    .icon {
-        position: absolute;
-        left: 1.8em;
-        transition: all 0.5s ease;
-        z-index: 5;
-        transform: scale(0.5, 0.5);
-    }
-
-    .icon.vis {
-        transform: translate(0, -28em);
-    }
-    /*------------spider-------------------*/
 
     @media only screen and (min-width: 991px) {
         .group, h2  {
@@ -146,20 +124,6 @@
             line-height: 1.5em;
             font-size: 1.5em;
         }
-        /*------------spider-------------------*/
-        #menu{
-            top: -30em;
-            left: 1em;
-            transform: scale(1, 1);
-        }
-        .icon{
-            left: 3em;
-            transform: scale(1, 1);
-        }
-        #menu.menuMove {
-            transform: translate(0, 20em) scale(1, 1);
-        }
-        /*------------spider-------------------*/
     }
     </style>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
@@ -197,15 +161,19 @@
         </div>
         <!-- 1 -->
         <section>
-            <img src="img/room1/綜院大廳(解析度低).jpg" class="bg">
-            <img src="img/room1/資產 31.png" class="girl">
+    		<img src="img/room1/綜院大廳(解析度低).jpg" class="bg">
+    		<div class="wrapper">
+            	<img src="img/room1/資產 31.png" class="girl">
+        	</div>
             <h2>小女孩：「媽媽跟我約在270415教室，但我一直找不到」</h2>
             <img src="img/room1/綜院415(小)-15.jpg" class="bg">
             <?php
                 echo '<h2> 小女孩：「'.$_SESSION['name'].'，我口好渴喔」</h2>';
             ?>
             <img src="img/room1/販賣機（無標價）-13.jpg" class="bg">
-            <img src="img/room1/資產 31.png" class="girl">
+            <div class="wrapper">
+            	<img src="img/room1/資產 31.png" class="girl">
+        	</div>
             <h2> 小女孩：「可以幫我買蘋果紅茶嗎？」</h2>
             <div class="wrong">
                 <h2> 投入的硬幣價格不對．．．</h2>
@@ -234,7 +202,9 @@
         <!-- 4 小女孩-->
         <section id="success">
             <img src="img/room1/inside.jpg" class="bg">
-            <img src="img/room1/資產 31.png" class="girl">
+            <div class="wrapper">
+            	<img src="img/room1/資產 31.png" class="girl">
+            </div>
             <h2> 小女孩：「我在這裡迷路了好久了，謝謝你」</h2>
             <section id="end">
                 <br>
@@ -258,160 +228,85 @@
     </article>
     
     <script type="text/javascript">
-    let $girl = $('.girl');   
-    let inter = null;
-    let girl_height = $girl.height();
-    let eleCount = 0
-    $('section').fadeOut(0); //隱藏下方內容
-    $('.wrong').fadeOut(0);
-    $('article').on('click', 'button', e => { //第一個點擊事件
-        if (e.target.value == 'ok') {
-            if ($('.wrong').eq(0).css('display') !== 'none') {
-                $('.wrong').eq(0).fadeOut(0);
+    window.onload = function(){
+        let voice = <?php include('voice.php'); ?>; //for spider
+        let $girl = $('.girl');   
+        let girl_height = $girl.height();
+        let eleCount = 0
+        $('section').fadeOut(0); //隱藏下方內容
+        $('.wrong').fadeOut(0);
+        $('article').on('click', 'button', function(e){ //第一個點擊事件
+            if (e.target.value == 'ok') {
+                if ($('.wrong').eq(0).css('display') !== 'none') {
+                    $('.wrong').eq(0).fadeOut(0);
+                }
+                $('section').eq(0).fadeIn(2000);
+            } else if(e.target.value == 'no'){
+                if ($('.wrong').eq(0).css('display') !== 'none') {
+                    $('.wrong').eq(0).fadeOut(0).fadeIn(1000);
+                } else {
+                    $('.wrong').eq(0).fadeIn(1000);
+                }
             }
-            $('section').eq(0).fadeIn(2000);
-        } else if(e.target.value == 'no'){
-            if ($('.wrong').eq(0).css('display') !== 'none') {
-                $('.wrong').eq(0).fadeOut(0).fadeIn(1000);
-            } else {
-                $('.wrong').eq(0).fadeIn(1000);
+            if ($('#price').val() === '25') { //第二個點擊事件
+                $('section').eq(1).fadeIn(2000);
+                if ($('.wrong').last().css('display') !== 'none') {
+                    $('.wrong').last().fadeOut(0);
+                }
+            } else if($('#price').val() !== '' && $('#price').val() !== '25'){
+                if ($('.wrong').last().css('display') !== 'none') {
+                    $('.wrong').last().fadeOut(0).fadeIn(1000);
+                } else {
+                    $('.wrong').last().fadeIn(1000);
+                }
             }
-        }
-        if ($('#price').val() === '25') { //第二個點擊事件
-            $('section').eq(1).fadeIn(2000);
-            if ($('.wrong').last().css('display') !== 'none') {
-                $('.wrong').last().fadeOut(0);
+
+            if ($('.floor').last().val() === '1') { //第三個點擊事件，如果到一樓
+                $('#success').fadeIn(2000);
+            } else if ($('.floor').last().val() !== '1' && $('.floor').last().val() !== '' && $('.floor').last().val() < 17) { //如果到其他樓
+                $('.no_one').append('<section style="opacity: 0" class="no_one_section"><img src="img/room1/電梯內（關門）（小）-15.jpg" class="bg"><h2>．．．．．．</h2><img src="img/room1/inside.jpg" class="bg"><h2> 這裡不是出口...去幾樓?</h2><div class="group"><input type="number" min="1" max="16" step="1" class="floor"> <button>確認</button></div></section>');
+                $('.no_one').find('.no_one_section').last().animate({ 'opacity': '1' }, 1500);
             }
-        } else if($('#price').val() !== '' && $('#price').val() !== '25'){
-            if ($('.wrong').last().css('display') !== 'none') {
-                $('.wrong').last().fadeOut(0).fadeIn(1000);
-            } else {
-                $('.wrong').last().fadeIn(1000);
-            }
+            girl();
+        })
+        function girl() {
+            $girl.each(function() { //確定小女孩位置
+                if ($(this).css('transform') === 'none') {
+                    let girl_top = $(this).css("top").toString();
+                    girl_top = Number(girl_top.replace(/px/, ""));
+                    $(this).css({
+                        "opacity": 0,
+                        "-webkit-transform": "translateY(-" + girl_height + "px)",
+                        "-ms-transform": "translateY(-" + girl_height + "px)",
+                        "transform": "translateY(-" + girl_height + "px)"
+                    });
+                }
+            });
         }
 
-        if ($('.floor').last().val() === '1') { //第三個點擊事件，如果到一樓
-            $('#success').fadeIn(2000);
-        } else if ($('.floor').last().val() !== '1' && $('.floor').last().val() !== '' && $('.floor').last().val() < 17) { //如果到其他樓
-            $('.no_one').append('<section style="opacity: 0" class="no_one_section"><img src="img/room1/電梯內（關門）（小）-15.jpg" class="bg"><h2>．．．．．．</h2><img src="img/room1/inside.jpg" class="bg"><h2> 這裡不是出口...去幾樓?</h2><div class="group"><input type="number" min="1" max="16" step="1" class="floor"> <button>確認</button></div></section>');
-            $('.no_one').find('.no_one_section').last().animate({ 'opacity': '1' }, 1500);
-        }
-        girl();
-    })
-    //偵測小女孩高度
-    inter = setInterval(function(){
-        girl_heigh = $girl.height();
-        if(girl_height !== 0){
-            clearInterval(inter);
-        }
-    }, 500);
-
-    function girl() {
-        $girl.each(function() { //確定小女孩位置
-            if ($(this).css('transform') === 'none') {
-                let girl_top = $(this).css("top").toString();
-                girl_top = Number(girl_top.replace(/px/, ""));
-                $(this).css({
-                    "opacity": 0,
-                    "transform": "translateY(-" + girl_height + "px)"
-                });
+        $(window).on('scroll', function() {
+            let bottom_of_window = $(window).scrollTop() + $(window).height(); //視埠的底部(上方加高)
+            let $end = $('#end');
+            let end = $end.offset().top; //結尾元素位置
+            $('.girl').each(function() {
+                let bottom_of_object = $(this).offset().top + $(this).outerHeight(); //小女孩元素底部位置
+                if (bottom_of_window > bottom_of_object && $(this).parent().parent().css('display') !== 'none') {
+                    $(this).animate({ 'opacity': '1' }, 1000);
+                }
+            });
+            if (bottom_of_window > end && $end.parent().css('display') !== 'none') {
+                $end.fadeIn(4000);
             }
         });
-    }
-
-    $(window).on('scroll', function() {
-        let bottom_of_window = $(window).scrollTop() + $(window).height(); //視埠的底部(上方加高)
-        let $end = $('#end');
-        let end = $end.offset().top; //結尾元素位置
-        $('.girl').each(function() {
-            let bottom_of_object = $(this).offset().top + $(this).outerHeight(); //小女孩元素底部位置
-            if (bottom_of_window > bottom_of_object && $(this).parent().css('display') !== 'none') {
-                $(this).animate({ 'opacity': '1' }, 1000);
-            }
-        });
-        if (bottom_of_window > end && $end.parent().css('display') !== 'none') {
-            $end.fadeIn(4000);
-        }
-    });
-    $('#back').on('click', ()=>{
-            history.back();
-    })
-    $('#sign_out').on('click', e =>{
-        location.href = 'sign_up.php';
-    })
-    /*------------spider-------------------*/
-    let menu = $('#menu');
-    let icon = $('.icon');
-    let voice = <?php include('voice.php'); ?>; 
-        
-    if (screen.width > 991) {
-
-        icon.each((index, value) => {
-            $(value).css('top', 1 + index * 7 + 'em');
-        });   
-    } else {
-        icon.each((index, value) => {
-            $(value).css('top', 0.5 + index * 3 + 'em');
-        });
-    }
-    menu.on('click', () => {
-            menu.toggleClass('menuMove');
-            icon.toggleClass('vis');
-    });
-    //voice
-    if(voice == '0'){
-        $('audio').attr('src', '');
-        $('#voice').attr('src', 'img/voice_block.png');
-    }else{
-        $('audio').attr('src', 'img/bgm.mp3');
-        setTimeout(function(){
-            if($('audio')[0].paused){
-                $('.icon').eq(1).click();
-            }
-        }, 1000);
-    }
-    //button
-    for(let i = 0; i < 3; i ++){
-        $('.icon').eq(i).on('click', e=>{
-            switch(e.target.id){
-                case 'account':
-                    location.href = 'profile.php';
-                break;
-                case 'voice':
-                    let voice_state = null;
-                    if($('audio').attr('src')){
-                        $('audio').attr('src', '');
-                        $('#voice').attr('src', 'img/voice_block.png');
-                         voice_state = '0';
-                    }else{
-                        $('audio').attr('src', 'img/bgm.mp3');
-                        $('#voice').attr('src', 'img/voice.png');
-                        voice_state = '1';
-                    }
-                    let formData = new FormData();
-                    formData.append('voice', voice_state);
-                    fetch('voice.php',{
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response=>
-                        response.text())
-                    .then(response=>{
-                        console.log(response);
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
-
-                break;
-                case 'forum':
-                    location.href = 'board.php';
-                break;
-            }
+        $('#back').on('click', function(){
+                history.back();
+        })
+        $('#sign_out').on('click', function(e){
+            location.href = 'sign_up.php';
         })
     }
-    /*------------spider-------------------*/
     </script>
+    <script type="text/javascript" src="spider/spider.js"></script>
 </body>
 
 </html>

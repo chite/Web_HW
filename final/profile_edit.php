@@ -6,14 +6,18 @@ if(isset($_SESSION['name'])){ //確認有此帳戶存在
 	$sth->execute(array($_SESSION['name']));
 	$row = $sth->fetch(PDO::FETCH_ASSOC);
     if($sth->rowCount() == 0){
-    	die('no one');
+    	die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
     } 
 }else{
-	die('no one');
+	die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
 }
 
 //上傳頭貼
 if(isset($_FILES['img']) && $_FILES['img']['size'] != 0){
+	if($_FILES["img"]["size"]/1024 > 100){
+		echo '<script>alert(\'檔案過大，請上傳小於100KB的頭貼\')</script>';
+		die('<meta http-equiv="refresh" content="0; url=profile.php">');
+	}
 	$extension = explode(".", $_FILES["img"]["name"]);
 	$extension =  strtolower(end($extension));
 	if(in_array($extension, array('jpeg', 'jpg', 'png'))){
@@ -30,7 +34,7 @@ if(isset($_FILES['img']) && $_FILES['img']['size'] != 0){
 }
 
 
-if(isset($_POST['new']) && isset($_POST['password']) && isset($_POST['page']) && ($_POST['page'] === '0' || $_POST['page'] === '1' || $_POST['page'] === '2')){
+if(isset($_POST['new']) && isset($_POST['password']) && isset($_POST['page']) && !empty($_POST['new']) && !empty($_POST['password']) && ($_POST['page'] === '0' || $_POST['page'] === '1' || $_POST['page'] === '2')){
 	$new = preg_replace("/\s+/", '',  htmlspecialchars($_POST['new']));
 	$password = preg_replace("/[^A-Za-z0-9]/", '', $_POST['password']);
 	if($_POST['page'] == 2){ //修改密碼
@@ -64,8 +68,9 @@ if(isset($_POST['new']) && isset($_POST['password']) && isset($_POST['page']) &&
         	echo '<script>alert(\'用戶名稱與他人重複，請重新輸入\')</script>';
 	        die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
         }else{
-        	$sth = $dbh->prepare('UPDATE account SET name = ? WHERE password = ?');
-			$sth->execute(array($new, $_SESSION['password']));
+        	$old_name = $_SESSION['name'];
+        	$sth = $dbh->prepare('UPDATE account SET name = ? WHERE name = ?');
+			$sth->execute(array($new, $old_name));
 			$_SESSION['name'] = $new;
 			echo '<script>alert(\'修改名稱成功\')</script>';
 	        die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
@@ -75,6 +80,7 @@ if(isset($_POST['new']) && isset($_POST['password']) && isset($_POST['page']) &&
 	    die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
 	}
 }else{
-	die('nothing');
+	echo '<script>alert(\'修改錯誤\')</script>';
+	die('<meta http-equiv="refresh" content="0; url=profile.php">') ;
 }
 ?>

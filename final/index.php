@@ -7,12 +7,12 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:title" content="逃出絕命政" >
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
-    <meta property="og:description" content="政大鬼故事👻" >
+    <meta property="og:description" content="👻👻👻" >
+    <title>逃出絕命政</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
-    <title>Ghost Story</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="spider/spider.css">
     <style type="text/css">
     body,
     html {
@@ -58,35 +58,9 @@ session_start();
     button {
         display: none;
     }
-     /*------------spider-------------------*/
-    #menu{
-        top: -30em;
-        left: 1em;
-        position: absolute;
-        -webkit-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-        z-index: 4;
+    img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+        display:none!important;
     }
-    .icon{
-        left: 3em;
-        position: absolute;
-        -webkit-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
-        z-index: 5;
-    }
-    #menu.menuMove {
-        -webkit-transform: translate(0, 20em);
-            -ms-transform: translate(0, 20em);
-                transform: translate(0, 20em);
-    }
-    .icon.vis {
-        -webkit-transform: translate(0, -28em);
-            -ms-transform: translate(0, -28em);
-                transform: translate(0, -28em);
-    }
-    /*------------spider-------------------*/
 
     @media only screen and (max-width: 991px) {
 
@@ -114,31 +88,9 @@ session_start();
             color: white;
             border: none;
         }
-   /*------------spider-------------------*/
-    #menu {
-        -webkit-transform: scale(0.5, 0.5);
-            -ms-transform: scale(0.5, 0.5);
-                transform: scale(0.5, 0.5);
-        top: -25em;
-        left: 0em;
-        
-    }
-
-    #menu.menuMove {
-        -webkit-transform: translate(0, 10em) scale(0.5, 0.5);
-            -ms-transform: translate(0, 10em) scale(0.5, 0.5);
-                transform: translate(0, 10em) scale(0.5, 0.5);
-    }
-
-    .icon {
-        -webkit-transform: scale(0.5, 0.5);
-            -ms-transform: scale(0.5, 0.5);
-                transform: scale(0.5, 0.5);
-        left: 1.8em;
-    }
-    /*------------spider-------------------*/
     }
     </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -156,6 +108,7 @@ session_start();
     <!------------spider------------------->
     <button>開始遊戲</button>
     <script type="text/javascript">
+    let voice = <?php include('voice.php'); ?>; //for spider
     let doors = $('#door1, #door2');
     let door1 = $('#door1');
     let door2 = $('#door2');
@@ -181,91 +134,21 @@ session_start();
     door2.css({
         'left': '50vw',
     });
-    doorHover.hover(() => {
+    doorHover.hover(function(){
         door1.css('left', '45vw');
         door2.css('left', '52vw');
-    }, () => {
+    }, function(){
         door1.css('left', '46.5vw');
         door2.css('left', '50vw');
     });
-    doorHover.on('click', () => {
+    doorHover.on('click', function(){
         location.href = "login1.php";
     });
-    button.on('click', () => {
+    button.on('click', function(){
         location.href = "login1.php";
     })
-    /*------------spider-------------------*/
-    let menu = $('#menu');
-    let icon = $('.icon');
-    let voice = <?php include('voice.php'); ?>;        
-    if (screen.width > 991) {
-
-        icon.each((index, value) => {
-            $(value).css('top', 1 + index * 7 + 'em');
-        });   
-    } else {
-        icon.each((index, value) => {
-            $(value).css('top', 0.5 + index * 3 + 'em');
-        });
-    }
-    menu.on('click', () => {
-            menu.toggleClass('menuMove');
-            icon.toggleClass('vis');
-    });
-    //voice
-    if(voice == '0'){
-        $('audio').attr('src', '');
-        $('#voice').attr('src', 'img/voice_block.png');
-    }else{
-        $('audio').attr('src', 'img/bgm.mp3');
-        setTimeout(function(){
-            if($('audio')[0].paused){
-                $('.icon').eq(1).click();
-            }
-        }, 1000);
-    }
-    //button
-    for(let i = 0; i < 3; i ++){
-        $('.icon').eq(i).on('click', e=>{
-            switch(e.target.id){
-                case 'account':
-                    location.href = 'profile.php';
-                break;
-                case 'voice':
-                    let voice_state = null;
-                    if($('audio').attr('src')){
-                        $('audio').attr('src', '');
-                        $('#voice').attr('src', 'img/voice_block.png');
-                         voice_state = '0';
-                    }else{
-                        $('audio').attr('src', 'img/bgm.mp3');
-                        $('#voice').attr('src', 'img/voice.png');
-                        voice_state = '1';
-                    }
-                    let formData = new FormData();
-                    formData.append('voice', voice_state);
-                    fetch('voice.php',{
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response=>
-                        response.text())
-                    .then(response=>{
-                        console.log(response);
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
-
-                break;
-                case 'forum':
-                    location.href = 'board.php';
-                break;
-            }
-        })
-    }
-    /*------------spider-------------------*/
     </script>
+    <script type="text/javascript" src="spider/spider.js"></script>
 </body>
 
 </html>

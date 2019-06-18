@@ -7,14 +7,14 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:title" content="政大鬼故事" >
+    <meta property="og:title" content="逃出絕命政" >
     <meta property="og:image" content="https://chite.000webhostapp.com/img/photo.png">
-    <meta property="og:description" content="政大鬼故事👻" >
-    <title>login</title>
+    <meta property="og:description" content="👻👻👻" >
+    <title>逃出絕命政-登入</title>
     <link rel="shortcut icon" type="image/png" href="https://chite.000webhostapp.com/img/photo.png">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="spider/spider.css">
     <style type="text/css">
     html,
     body {
@@ -113,7 +113,9 @@ session_start();
         position: relative;
         top: 50%;
         right: 5%;
-        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
         height: auto;
         float: right;
 
@@ -122,6 +124,8 @@ session_start();
     .box-one {
         visibility: visible;
         opacity: 1;
+        -webkit-transition: opacity 2s 0s;
+        -o-transition: opacity 2s 0s;
         transition: opacity 2s 0s;
     }
 
@@ -130,37 +134,13 @@ session_start();
         height: 0;
         opacity: 0;
         overflow: hidden;
+        -webkit-transition: opacity 2s 0s;
+        -o-transition: opacity 2s 0s;
         transition: opacity 2s 0s;
     }
     img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
         display:none!important;
     }
-    /*------------spider-------------------*/
-    #menu {
-        position: absolute;
-        transition: all 0.5s ease;
-        z-index: 4;
-        transform: scale(0.5, 0.5);
-        top: -25em;
-        left: 0;
-    }
-
-    #menu.menuMove {
-        transform: translate(0, 10em) scale(0.5, 0.5);
-    }
-
-    .icon {
-        position: absolute;
-        left: 1.8em;
-        transition: all 0.5s ease;
-        z-index: 5;
-        transform: scale(0.5, 0.5);
-    }
-
-    .icon.vis {
-        transform: translate(0, -28em);
-    }
-    /*------------spider-------------------*/
 
     @media only screen and (min-width : 992px) {
         #door {
@@ -170,7 +150,8 @@ session_start();
             border-left: #1A1A1A solid 30px;
             border-right: #1A1A1A solid 30px;
             margin: 0 auto;
-            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
             text-align: center;
         }
 
@@ -180,20 +161,6 @@ session_start();
             vertical-align: middle;
             height: 100%;
         }
-        /*------------spider-------------------*/
-        #menu{
-            top: -30em;
-            left: 1em;
-            transform: scale(1, 1);
-        }
-        .icon{
-            left: 3em;
-            transform: scale(1, 1);
-        }
-        #menu.menuMove {
-            transform: translate(0, 20em) scale(1, 1);
-        }
-        /*------------spider-------------------*/
     }
 
     @media only screen and (max-width: 991px) {
@@ -216,6 +183,7 @@ session_start();
         }
     }
     </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -271,20 +239,25 @@ session_start();
         </div>
     </div>
     <script type="text/javascript">
+    let voice = <?php include('voice.php'); ?>; //for spider
     let span = $('span');
     let pancelBox = $('.pancel-box');
     let uploadPT = $("input[type='file']");
     let toPreviosPage = $('.box-three button');
     uploadPT.on('change', function(){
         if(this.files[0]){
-        	let reader = new FileReader();
-        	reader.readAsDataURL(this.files[0]);
-        	reader.onload = function(e){
-        		$('#photo').attr('src', e.target.result);
-        	}
+            if(this.files[0].size / 1024 > 100){
+                alert('檔案過大，請更換至100KB以下的圖片');
+            }else{
+                let reader = new FileReader();
+                reader.readAsDataURL(this.files[0]);
+                reader.onload = function(e){
+                    $('#photo').attr('src', e.target.result);
+                }
+            }
         }
     })
-    span.eq(0).on('click', () => {
+    span.eq(0).on('click', function(){
         $('.box-one').css({
             'visibility': 'hidden',
             'height': 0,
@@ -297,7 +270,7 @@ session_start();
             'opacity': 1
         })
     })
-    span.eq(1).on('click', ()=>{
+    span.eq(1).on('click', function(){
         $('.box-one').css({
             'visibility': 'hidden',
             'height': 0,
@@ -310,7 +283,7 @@ session_start();
             'opacity': 1
         })
     })
-    toPreviosPage.eq(0).on('click', e =>{
+    toPreviosPage.eq(0).on('click', function(e){
         e.preventDefault();
         $('.box-one').css({
             'visibility': 'visible',
@@ -324,86 +297,15 @@ session_start();
             'opacity': 0
         })
     })
-    $('input[name="reg_password2"]').on('keyup keydown',()=>{
+    $('input[name="reg_password2"]').on('keyup keydown', function(){
     	if($('input[name="reg_password2"]').val() !== $('input[name="reg_password"]').val()){
     		$('#remind').text('密碼驗證不一致');
     	}else{
     		$('#remind').text('');
     	}
     })
-    /*------------spider-------------------*/
-    let menu = $('#menu');
-    let icon = $('.icon');
-    let voice = <?php include('voice.php'); ?>; 
-        
-    if (screen.width > 991) {
-
-        icon.each((index, value) => {
-            $(value).css('top', 1 + index * 7 + 'em');
-        });   
-    } else {
-        icon.each((index, value) => {
-            $(value).css('top', 0.5 + index * 3 + 'em');
-        });
-    }
-    menu.on('click', () => {
-            menu.toggleClass('menuMove');
-            icon.toggleClass('vis');
-    });
-    //voice
-    if(voice == '0'){
-        $('audio').attr('src', '');
-        $('#voice').attr('src', 'img/voice_block.png');
-    }else{
-        $('audio').attr('src', 'img/bgm.mp3');
-        setTimeout(function(){
-            if($('audio')[0].paused){
-                $('.icon').eq(1).click();
-            }
-        }, 1000);
-    }
-    //button
-    for(let i = 0; i < 3; i ++){
-        $('.icon').eq(i).on('click', e=>{
-            switch(e.target.id){
-                case 'account':
-                    location.href = 'profile.php';
-                break;
-                case 'voice':
-                    let voice_state = null;
-                    if($('audio').attr('src')){
-                        $('audio').attr('src', '');
-                        $('#voice').attr('src', 'img/voice_block.png');
-                         voice_state = '0';
-                    }else{
-                        $('audio').attr('src', 'img/bgm.mp3');
-                        $('#voice').attr('src', 'img/voice.png');
-                        voice_state = '1';
-                    }
-                    let formData = new FormData();
-                    formData.append('voice', voice_state);
-                    fetch('voice.php',{
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response=>
-                        response.text())
-                    .then(response=>{
-                        console.log(response);
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
-
-                break;
-                case 'forum':
-                    location.href = 'board.php';
-                break;
-            }
-        })
-    }
-    /*------------spider-------------------*/
     </script>
+    <script type="text/javascript" src="spider/spider.js"></script>
 </body>
 
 </html>

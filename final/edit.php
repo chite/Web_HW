@@ -7,6 +7,10 @@ if(isset($_POST['id']) && isset($_POST['success_edit']) && !empty($_POST['id']) 
 		$sth = $dbh->prepare('UPDATE board SET response = ? WHERE id = ?');
 		$sth->execute(array($content, $_POST['id']));
 		echo '<meta http-equiv="refresh" content="0; url=message.php?id='.$_POST['id'].'">';
+	}else{
+		echo '<meta http-equiv="refresh" content="0; url=message.php?id='.$_POST['id'].'">';
 	}
+}else{
+		echo '<meta http-equiv="refresh" content="0; url=message.php?id='.$_POST['id'].'">';
 }
 ?>
